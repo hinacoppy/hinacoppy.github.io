@@ -91,6 +91,7 @@
   line-height:var(--point-width);
   width:var(--point-width);
   z-index:30;
+  pointer-events:none; /* through drag event into chequer below */
 }
 .chequer{
   position:absolute;
