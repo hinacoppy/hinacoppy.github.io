@@ -67,7 +67,8 @@
   background-color:var(--cube-base);
 }
 .cubeoffer{
-  background-color:var(--cube-offer);
+  color:var(--cube-offer-fg);
+  background-color:var(--cube-offer-bg);
 }
 .dice{
   position:absolute;
@@ -185,7 +186,8 @@
   --label-color:#fff;
   --cube-base:#ecc;
   --cube-text:#222;
-  --cube-offer:#04f;
+  --cube-offer-bg:#04f;
+  --cube-offer-fg:#f40;
   --stack1:#000;
   --stack2:#000;
   --chequer1:#9ce;
@@ -206,14 +208,15 @@
   --label-color:#ddd;
   --cube-base:#ecc;
   --cube-text:#222;
-  --cube-offer:#fcc;
+  --cube-offer-bg:#fcc;
+  --cube-offer-fg:#22f;
   --stack1:#106; /* = --dicepip1 */
   --stack2:#606; /* = --dicepip2 */
   --chequer1:#33f;
   --chequer2:#fff;
   --diceface1:#33f; /* = --chequer1 */
   --diceface2:#fff; /* = --chequer2 */
-  --dicepip1:#000;
+  --dicepip1:#fff;
   --dicepip2:#000;
 }
 .boardStyle2{
@@ -227,14 +230,15 @@
   --label-color:#dddddd;
   --cube-base:#ffffff;
   --cube-text:#ff0000;
-  --cube-offer:#ffff00;
+  --cube-offer-bg:#ffff00;
+  --cube-offer-fg:#0000ff;
   --stack1:#ffffff;
   --stack2:#000000;
   --chequer1:#e71f00;
   --chequer2:#ffffff;
   --diceface1:#e71f00;
   --diceface2:#ffffff;
-  --dicepip1:#000000;
+  --dicepip1:#ffffff;
   --dicepip2:#000000;
 }
 .boardStyle3{
@@ -248,7 +252,8 @@
   --label-color:#fff;
   --cube-base:#da6;
   --cube-text:#008;
-  --cube-offer:#fc8;
+  --cube-offer-bg:#fc8;
+  --cube-offer-fg:#0ff;
   --stack1:#000;
   --stack2:#000;
   --chequer1:#fdc;
@@ -269,7 +274,8 @@
   --label-color:#ffffff;
   --cube-base:#d6d6d6;
   --cube-text:#000000;
-  --cube-offer:#a6a6f6;
+  --cube-offer-bg:#a6a6f6;
+  --cube-offer-fg:#0000ff;
   --stack1:#000000;
   --stack2:#ffffff;
   --chequer1:#ffffff;
@@ -290,7 +296,8 @@
   --label-color:#dddddd;
   --cube-base:#d6d6d6;
   --cube-text:#000000;
-  --cube-offer:#a6a6f6;
+  --cube-offer-bg:#a6a6f6;
+  --cube-offer-fg:#0000ff;
   --stack1:#ffffff;
   --stack2:#000000;
   --chequer1:#000000;
@@ -311,7 +318,8 @@
   --label-color:#ffffff;
   --cube-base:#d6d6d6;
   --cube-text:#000000;
-  --cube-offer:#a6a6f6;
+  --cube-offer-bg:#a6a6f6;
+  --cube-offer-fg:#0000ff;
   --stack1:#ffffff;
   --stack2:#000000;
   --chequer1:#1a1b1b;
