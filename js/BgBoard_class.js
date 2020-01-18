@@ -314,8 +314,8 @@ class BgBoard {
           ex = this.pointX[pt];
           sf = (st > this.barStackThreshold + 1);
           ty = (ptStack[pt] > this.barStackThreshold) ? this.barStackThreshold : ptStack[pt];
-          ey = (pt == 0) ? this.barY[which] - (ty * this.pieceHeight)
-                         : this.barY[which] + (ty * this.pieceHeight); //pt==25
+          ey = (pt == 0) ? this.barY[which] + (ty * this.pieceHeight)
+                         : this.barY[which] - (ty * this.pieceHeight); //pt==25
         } else { //in field
           ex = this.pointX[pt];
           sf = (st > this.pointStackThreshold + 1);
@@ -361,7 +361,6 @@ class BgBoard {
     const duration = (hitflag) ? delay/2 : delay;
     this.chequer[ckerowner][idx].point = toabs;
     this.chequer[ckerowner][idx].stackidx = num;
-
     const promise = this.chequer[ckerowner][idx].dom.css({"z-index": 50 + num}).animate(toPosition, duration).promise();
     this.showStackInfo(sf, toabs, num, toPosition, ckerowner);
 
@@ -407,8 +406,8 @@ class BgBoard {
       ex = this.pointX[topt];
       sf = (num > this.barStackThreshold + 1);
       ty = (num > this.barStackThreshold) ? this.barStackThreshold : num;
-      ey = (toabs == 0) ? this.barY[which] - (ty * this.pieceHeight)
-                        : this.barY[which] + (ty * this.pieceHeight); //topt==25
+      ey = (toabs == 0) ? this.barY[which] + (ty * this.pieceHeight)
+                        : this.barY[which] - (ty * this.pieceHeight); //topt==25
     } else { //in field
       ex = this.pointX[toabs];
       sf = (num > this.pointStackThreshold + 1);
@@ -456,16 +455,16 @@ class BgBoard {
   bgBoardConfig() {
     //CSSで定義された数値情報を取得
     const style = getComputedStyle(document.documentElement);
-    const boardHeightNum   = parseInt(style.getPropertyValue('--boardHeightNum'));
-    const boardWidthNum    = parseInt(style.getPropertyValue('--boardWidthNum'));
-    const pointWidthNum    = parseInt(style.getPropertyValue('--pointWidthNum'));
-    const cubeSizeNum      = parseInt(style.getPropertyValue('--cubeSizeNum'));
-    const frameSizeNum     = parseInt(style.getPropertyValue('--frameSizeNum'));
-    const offtrayMarginNum = parseInt(style.getPropertyValue('--offtrayMarginNum'));
+    const boardHeightNum   = parseFloat(style.getPropertyValue('--boardHeightNum'));
+    const boardWidthNum    = parseFloat(style.getPropertyValue('--boardWidthNum'));
+    const pointWidthNum    = parseFloat(style.getPropertyValue('--pointWidthNum'));
+    const cubeSizeNum      = parseFloat(style.getPropertyValue('--cubeSizeNum'));
+    const frameSizeNum     = parseFloat(style.getPropertyValue('--frameSizeNum'));
+    const offtrayMarginNum = parseFloat(style.getPropertyValue('--offtrayMarginNum'));
 
     //ボード表示のための位置と大きさの定数を計算
-    this.mainBoardHeight = this.mainBoard.height()
-    this.mainBoardWidth = this.mainBoard.width()
+    this.mainBoardHeight = this.mainBoard.height();
+    this.mainBoardWidth = this.mainBoard.width();
 
     this.vw = this.mainBoardWidth / boardWidthNum;
     this.vh = this.mainBoardHeight / boardHeightNum;
@@ -477,6 +476,7 @@ class BgBoard {
     const pieceHeightRatio = (phr > 1) ? 1 : phr;
     this.pieceHeight = this.pieceWidth * pieceHeightRatio;
     this.boffHeight = this.pieceWidth / 4 ;  //ベアオフの駒は立てたように表示
+    this.offtrayMargin = offtrayMarginNum;
 
     if (this.boardAppFlag) {
       this.pointX = [6, 12, 11, 10,  9,  8,  7,  5,  4,  3,  2,  1,  0,
@@ -512,8 +512,8 @@ class BgBoard {
     const cubeY1 = this.mainBoardHeight - this.cubeSize - cubeY2;
     this.cubeY = [cubeY0, cubeY1, cubeY2];
 
-    const bar1Y = this.cubeSize + 5;
-    const bar2Y = this.mainBoardHeight - bar1Y - this.pieceHeight;
+    const bar1Y = this.mainBoardHeight / 2 - (this.pieceHeight * 2);
+    const bar2Y = this.mainBoardHeight / 2 + this.pieceHeight;
     this.barY = [null, bar1Y, bar2Y];
 
     this.upperlabelY = - frameSizeNum * this.vw;
@@ -523,9 +523,8 @@ class BgBoard {
     this.rightSideOff = this.mainBoardWidth - this.pieceWidth;
 
     if (this.boardAppFlag) {
-      this.pointX[26] += offtrayMarginNum;
+      this.pointX[26] += this.offtrayMargin;
     } else {
-      this.offtrayMargin = offtrayMarginNum;
       this.pointX[26] = (this.leftrightFlag) ? this.leftSideOff  - this.offtrayMargin
                                              : this.rightSideOff + this.offtrayMargin;
     }
