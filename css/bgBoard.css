@@ -113,6 +113,9 @@
   width:var(--point-width);
   height:var(--point-height);
 }
+.flash{
+  opacity:0.4;
+}
 .pt_dnev{
   background:linear-gradient(to top    left,  var(--triangle-odd) 50%, transparent 50%) top left/  50.1% 100% no-repeat,
              linear-gradient(to top    right, var(--triangle-odd) 50%, transparent 50%) top right/ 50.1% 100% no-repeat;
