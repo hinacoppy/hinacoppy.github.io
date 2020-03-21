@@ -278,6 +278,13 @@ class Xgid {
     }
   }
 
+  isValid() {
+    if (this._dice_ary[1] > 6 || this._dice_ary[1] < 0) { return false; }
+    if (this._dice_ary[2] > 6 || this._dice_ary[2] < 0) { return false; }
+    if (this._boff[0] < 0 || this._boff[1] < 0) { return false; }
+    return true;
+  }
+
   isBlocked(p) {
     if (p == 0) { return false; }
     const pt = this._turnpos(p);
