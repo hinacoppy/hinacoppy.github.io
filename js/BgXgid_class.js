@@ -64,7 +64,7 @@ class Xgid {
     // dice_odrはダイスを昇順にして保持する
     const dice1 = dicestr.substr(0,1);
     const dice2 = dicestr.substr(1,1);
-    if (dice1 > dice2) { this._dice_odr = dice2 + dice1; }
+    this._dice_odr = (dice1 < dice2) ? dice1 + dice2 : dice2 + dice1;
     this._dice_ary = [0, parseInt(dice1), parseInt(dice2)];
     this._dbloffer = false;
     this.zorome = (dice1 == dice2);
@@ -276,6 +276,13 @@ class Xgid {
     } else if (to == 0) {
       this._usable_dice.splice(-1, 1);  //上記で使えなかったときは大きい目から使う
     }
+  }
+
+  isValid() {
+    if (this._dice_ary[1] > 6 || this._dice_ary[1] < 0) { return false; }
+    if (this._dice_ary[2] > 6 || this._dice_ary[2] < 0) { return false; }
+    if (this._boff[0] < 0 || this._boff[1] < 0) { return false; }
+    return true;
   }
 
   isBlocked(p) {
