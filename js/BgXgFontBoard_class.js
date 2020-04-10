@@ -2,7 +2,7 @@
 'use strict';
 
 class XgFontBoard {
-  constructor(xgidstr, rotation) {
+  constructor(xgidstr, rotation='ccw', col='bw') {
     this.rotation = (rotation == 'ccw') ? 0 : 1;
     this.xgid = new Xgid(xgidstr);
     this.turn = (this.xgid.get_turn() == 1) ? 0 : 1;
@@ -19,6 +19,11 @@ class XgFontBoard {
                     [32,240,103, 98,103, 98,103, 98,64,32,64,103, 98,103, 98,103, 98,240,32,13,10],
                     [32,240,102, 97,102, 97,102, 97,64,32,64,102, 97,102, 97,102, 97,240,32,13,10],
                     [32,243,163,180,179,180,164,244,32,13,10]];
+    if (col == 'bw') {
+      this.fontcd = [[20,10], [219,208], [235,230], [55,48]]; //in field, on the bar(or stack), bearoff, dice
+    } else { // col == 'wb'
+      this.fontcd = [[10,20], [208,219], [230,235], [48,55]];
+    }
     this.set_frame();
     this.set_cube();
     this.set_dice();
@@ -54,7 +59,7 @@ class XgFontBoard {
     if (this.xgid.get_dice() == "00") { return; }
     const xx0 = (this.turn == 0) ? 12 : 3;
     const xx3 = xx0 + 3;
-    const offset = (this.turn == 0) ? 55 : 48;
+    const offset = (this.turn == 0) ? this.fontcd[3][0] : this.fontcd[3][1];
     this.xgboard[6][xx0] = this.xgid.get_dice(1) + offset;
     this.xgboard[6][xx3] = this.xgid.get_dice(2) + offset;
   }
@@ -64,34 +69,41 @@ class XgFontBoard {
     const xx = (this.rotation == 0) ? 18 : 0;
     const bo_me = this.xgid.get_boff( 1);
     const bo_yu = this.xgid.get_boff(-1);
-    this.xgboard[ 1][xx] = (bo_yu >  5) ? 230 : ((bo_yu > 0) ? 230 + ( 5 - bo_yu) : 32);
-    this.xgboard[ 2][xx] = (bo_yu > 10) ? 230 : ((bo_yu > 5) ? 230 + (10 - bo_yu) : 32);
-    this.xgboard[ 3][xx] =                      ((bo_yu >10) ? 230 + (15 - bo_yu) : 32);
-    this.xgboard[11][xx] = (bo_me >  5) ? 235 : ((bo_me > 0) ? 235 + ( 5 - bo_me) : 32);
-    this.xgboard[10][xx] = (bo_me > 10) ? 235 : ((bo_me > 5) ? 235 + (10 - bo_me) : 32);
-    this.xgboard[ 9][xx] =                      ((bo_me >10) ? 235 + (15 - bo_me) : 32);
+    const cd_me = this.fontcd[2][0];
+    const cd_yu = this.fontcd[2][1];
+    this.xgboard[ 1][xx] = (bo_yu >  5) ? cd_yu : ((bo_yu > 0) ? cd_yu + ( 5 - bo_yu) : 32);
+    this.xgboard[ 2][xx] = (bo_yu > 10) ? cd_yu : ((bo_yu > 5) ? cd_yu + (10 - bo_yu) : 32);
+    this.xgboard[ 3][xx] =                        ((bo_yu >10) ? cd_yu + (15 - bo_yu) : 32);
+    this.xgboard[11][xx] = (bo_me >  5) ? cd_me : ((bo_me > 0) ? cd_me + ( 5 - bo_me) : 32);
+    this.xgboard[10][xx] = (bo_me > 10) ? cd_me : ((bo_me > 5) ? cd_me + (10 - bo_me) : 32);
+    this.xgboard[ 9][xx] =                        ((bo_me >10) ? cd_me + (15 - bo_me) : 32);
   }
 
   //チェッカーを表示
   set_chequer() {
     const xxary = [[9,16,15,14,13,12,11, 7, 6, 5, 4, 3, 2, 2, 3, 4, 5, 6, 7,11,12,13,14,15,16, 9], //CCW
                    [9, 2, 3, 4, 5, 6, 7,11,12,13,14,15,16,16,15,14,13,12,11, 7, 6, 5, 4, 3, 2, 9]]; //CW
+    const c1_me = this.fontcd[0][0];
+    const c1_yu = this.fontcd[0][1];
+    const c2_me = this.fontcd[1][0];
+    const c2_yu = this.fontcd[1][1];
     for (let pt = 0; pt < 26; pt++) {
       const col = this.xgid.get_ptcol(pt);
       const no  = this.xgid.get_ptno(pt);
       const xxx = xxary[this.rotation][pt];
       if (no == 0) { continue; }
       for (let yy = 0; yy < 5 && yy < no; yy++) {
-        const yyy = (pt >= 13) ? 1 + yy : 11 - yy;
         if (pt == 0 || pt == 25) {
-          this.xgboard[yyy][xxx] = (col == 1 ? 219 : 208); //on the bar
+          const yyy = (pt >= 13) ? 5 - yy : 7 + yy;
+          this.xgboard[yyy][xxx] = (col == 1 ? c2_me : c2_yu); //on the bar
         } else {
-          this.xgboard[yyy][xxx] += (col == 1 ? 20 : 10); //in field
+          const yyy = (pt >= 13) ? 1 + yy : 11 - yy;
+          this.xgboard[yyy][xxx] += (col == 1 ? c1_me : c1_yu); //in field
         }
       }
       if (no >= 6) {
         const yyy = (pt >= 13) ? 5 : 7;
-        this.xgboard[yyy][xxx] = no - 5 + (col == 1 ? 219 : 208); //stack chequer
+        this.xgboard[yyy][xxx] = no - 5 + (col == 1 ? c2_me : c2_yu); //stack chequer
       }
     }
   }

@@ -162,10 +162,10 @@ class BgBoard {
   }
 
   flipHorizOrientation() {
-    this.leftrightFlag = !this.leftrightFlag;
     this.flipHoriz();
     this.pointX[26] = (this.leftrightFlag) ? this.leftSideOff  - this.offtrayMargin
                                            : this.rightSideOff + this.offtrayMargin;
+    this.leftrightFlag = !this.leftrightFlag;
     this.showBoard(this.xgidstr);
   }
 
@@ -361,6 +361,7 @@ class BgBoard {
     const duration = (hitflag) ? delay/2 : delay;
     this.chequer[ckerowner][idx].point = toabs;
     this.chequer[ckerowner][idx].stackidx = num;
+console.log("animateChequer ZINDEX", 50+num);
     const promise = this.chequer[ckerowner][idx].dom.css({"z-index": 50 + num}).animate(toPosition, duration).promise();
     this.showStackInfo(sf, toabs, num, toPosition, ckerowner);
 
@@ -506,6 +507,7 @@ class BgBoard {
     this.pointStackThreshold = 5;
     this.barStackThreshold = 3;
 
+
     this.cubeX = this.pointX[0] + 0.1 * this.vw; // cube class widthを加味
     const cubeY0 = Math.round(this.mainBoardHeight / 2 - this.cubeSize / 2);
     const cubeY2 = 5;
@@ -523,7 +525,7 @@ class BgBoard {
     this.rightSideOff = this.mainBoardWidth - this.pieceWidth;
 
     if (this.boardAppFlag) {
-      this.pointX[26] += this.offtrayMargin;
+      this.pointX[26] += offtrayMarginNum;
     } else {
       this.pointX[26] = (this.leftrightFlag) ? this.leftSideOff  - this.offtrayMargin
                                              : this.rightSideOff + this.offtrayMargin;
