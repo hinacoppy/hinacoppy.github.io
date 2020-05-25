@@ -7,7 +7,6 @@ class BgBoard {
     let rotation = "ccw";
     this.boardAppFlag = false;
     this.gameObj = null;
-
     switch(gamemode) { //呼出し元アプリ毎の設定
     case "problemPager":
       boardtype = arg1;
@@ -23,7 +22,7 @@ class BgBoard {
     }
 
     this.xgidstr = "XGID=--------------------------:0:0:0:00:0:0:0:0:0";
-    this.leftrightFlag = (rotation == 'cw'); //true: Left bearoff, false: Right bearoff
+    this.leftrightFlag = (rotation === 'cw'); //true: Left bearoff, false: Right bearoff
     this.topbottomFlag = true; //true: player2 is bottom, player1 is top
     this.mainBoard = $('#board'); //need to define before bgBoardConfig()
     this.bgBoardConfig();
@@ -165,8 +164,12 @@ class BgBoard {
     this.flipHoriz();
     this.pointX[26] = (this.leftrightFlag) ? this.leftSideOff  - this.offtrayMargin
                                            : this.rightSideOff + this.offtrayMargin;
+//    this.leftrightFlag = !this.leftrightFlag;
+//    this.showBoard(this.xgidstr);
+  }
+
+  flipHorizFlag() {
     this.leftrightFlag = !this.leftrightFlag;
-    this.showBoard(this.xgidstr);
   }
 
   flipHoriz() {
@@ -569,7 +572,9 @@ console.log("getDragStartPoint", id, player, pt);
   }
 
   getChequerOnDragging(pt, player) {
-    const chker = this.chequer[player].find(elem => elem.point == pt);
+    const aryreverse = this.chequer[player].reverse();
+    const chker = aryreverse.find(elem => elem.point == pt); //一番上の(最後の)チェッカーを返す
+    //const chker = this.chequer[player].find(elem => elem.point == pt);
 console.log("getChequerOnDragging", pt, player, chker);
     return chker;
   }
@@ -592,6 +597,38 @@ console.log("getOppoChequerAndGotoBar", ptt, pt, player, chker);
     this.pointAll.removeClass("flash");
     this.offtray[1].removeClass("flash");
     this.offtray[2].removeClass("flash");
+  }
+
+  redraw() {
+    this.bgBoardConfig();
+
+    //bar
+    $("#bar").css(this.getPosObj(this.pointX[0], 0));
+    //offtray
+    if (this.boardAppFlag) {
+      $("#offtray1").css(this.getPosObj(13 * this.pointWidth, 50 * this.vh));
+      $("#offtray2").css(this.getPosObj(13 * this.pointWidth, 0));
+    } else {
+      $("#offtray1").css(this.getPosObj( 0 * this.pointWidth - this.offtrayMargin, 0));
+      $("#offtray2").css(this.getPosObj(14 * this.pointWidth, 0));
+    }
+    //point triangles
+    for (let i = 1; i < 25; i++) {
+      const ey = (i > 12) ? 0 : this.mainBoardHeight - this.point[i].height();
+      this.point[i].css(this.getPosObj(this.pointX[i], ey));
+    }
+    //label
+    for (let i = 1; i < 25; i++) {
+      const ey = (i > 12) ? this.upperlabelY : this.lowerlabelY;
+      this.labels[i].css(this.getPosObj(this.pointX[i], ey));
+    }
+    //dice
+    this.dice[1][0].css(this.getPosObj(this.dice10X, this.diceY));
+    this.dice[1][1].css(this.getPosObj(this.dice11X, this.diceY));
+    this.dice[2][0].css(this.getPosObj(this.dice20X, this.diceY));
+    this.dice[2][1].css(this.getPosObj(this.dice21X, this.diceY));
+
+    this.showBoard(this.xgidstr);
   }
 
 } //class BgBoard
