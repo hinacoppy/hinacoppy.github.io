@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+*{
+  user-select:none; /* タップ、ドラッグで文字選択しないように */
+}
+.drag-and-drop{
+  cursor:move;
+  width:100px;
+  height:100px;
+  position:absolute;
+  z-index:20;
+  color:#fff;
+  font-size:20px;
+  line-height:100px;
+  text-align:center
+}
+.dragging{
+  z-index:99;
+  opacity: 0.6;
+}
+#red-box{
+  top:0;
+  left:0;
+  background-color:#f48fb1
+}
+#blue-box{
+  top:0;
+  left:110px;
+  background-color:#64b5f6
+}
+#yellow-box{
+  top:0;
+  left:220px;
+  background-color:#ffe082
+}
+#green-box{
+  top:150px;
+  left:0;
+  background-color:#24a2b1
+}
+#purple-box{
+  top:150px;
+  left:110px;
+  background-color:#f435f6
+}
+#black-box{
+  top:150px;
+  left:220px;
+  background-color:#444444
+}
+</style>
+</head>
+<body>
+<div class="drag-and-drop" id="red-box">drag</div>
+<div class="drag-and-drop" id="blue-box">and</div>
+<div class="drag-and-drop" id="yellow-box">drop</div>
+<div class="drag-and-drop draggable" id="green-box">drag</div>
+<div class="drag-and-drop draggable" id="purple-box">and</div>
+<div class="drag-and-drop" id="black-box">drop</div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<button onclick="swapChequerDraggable();">SWAP DRAGGABLE</button>
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+<script>
+
+var chequerall = $(".drag-and-drop");
+setChequerDraggable();
+
+function  dragStartAction(event, ui) {
+    const dragObject = $(event.currentTarget);
+    const id = dragObject.attr("id");
+  console.log("dragStartAction(event, ui)", event.currentTarget, ui.position, id);
+}
+function  dragStopAction(event, ui) {
+  console.log("dragStopAction(event, ui)", event.currentTarget, ui.position);
+}
+
+function  swapChequerDraggable(player, init = false) {
+  chequerall.toggleClass("draggable");
+  console.log("swapChequerDraggable()", player, init);
+}
+
+function setChequerDraggable() {
+  //広域変数
+  var x;//要素内のクリックされた位置
+  var y;
+  var dragobj; //ドラッグ中のオブジェクト
+
+  //以下の処理は、パフォーマンスのため、jQueryのコードは含まない
+
+  //ドラッグ開始時のコールバック関数
+  const evfn_dragstart = ((e) => {
+    dragobj = e.target; //dragする要素を取得し、広域変数に格納
+    if (!dragobj.classList.contains("draggable")) { return; } //draggableでないオブジェクトは無視
+
+    dragobj.classList.add("dragging"); //drag中フラグ(クラス追加/削除で制御)
+
+    //マウスイベントとタッチイベントの差異を吸収
+    const event = (e.type === "mousedown") ? e : e.changedTouches[0];
+
+    //要素内の相対座標を取得
+    x = event.pageX - dragobj.offsetLeft;
+    y = event.pageY - dragobj.offsetTop;
+
+    //イベントハンドラを登録
+    document.body.addEventListener("mousemove",  evfn_drag,    false);
+    document.body.addEventListener("mouseleave", evfn_dragend, false);
+    dragobj.      addEventListener("mouseup",    evfn_dragend, false);
+    document.body.addEventListener("touchmove",  evfn_drag,    false);
+    document.body.addEventListener("touchleave", evfn_dragend, false);
+    dragobj.      addEventListener("touchend",   evfn_dragend, false);
+
+    const ui = {position: { //dragStartAction()に渡すオブジェクトを作る
+                 left: event.clientX,
+                 top:  event.clientY
+               }};
+    dragStartAction(event, ui);
+  });
+
+  //ドラッグ中のコールバック関数
+  const evfn_drag = ((e) => {
+    e.preventDefault(); //フリックしたときに画面を動かさないようにデフォルト動作を抑制
+
+    //マウスイベントとタッチイベントの差異を吸収
+    const event = (e.type === "mousemove") ? e : e.changedTouches[0];
+
+    //マウスが動いた場所に要素を動かす
+    dragobj.style.top  = event.pageY - y + "px";
+    dragobj.style.left = event.pageX - x + "px";
+  });
+
+  //ドラッグ終了時のコールバック関数
+  const evfn_dragend = ((e) => {
+    dragobj.classList.remove("dragging"); //drag中フラグを削除
+
+    //イベントハンドラの削除
+    document.body.removeEventListener("mousemove",  evfn_drag,    false);
+    document.body.removeEventListener("mouseleave", evfn_dragend, false);
+    dragobj.      removeEventListener("mouseup",    evfn_dragend, false);
+    document.body.removeEventListener("touchmove",  evfn_drag,    false);
+    document.body.removeEventListener("touchleave", evfn_dragend, false);
+    dragobj.      removeEventListener("touchend",   evfn_dragend, false);
+
+    const ui = {position: { //dragStopAction()に渡すオブジェクトを作る
+                 left: event.clientX,
+                 top:  event.clientY
+               }};
+    dragStopAction(event, ui);
+  });
+
+  //dragできるオブジェクトにdragstartイベントを設定
+  for(elm of chequerall) {
+    elm.addEventListener("mousedown",  evfn_dragstart, false);
+    elm.addEventListener("touchstart", evfn_dragstart, false);
+  }
+}
+</script>
+</body>
+</html>
