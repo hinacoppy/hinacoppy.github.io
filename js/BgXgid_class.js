@@ -35,6 +35,9 @@ class Xgid {
     this.zorome = (this.get_dice(1) == this.get_dice(2));
     this._usable_dice = this._setUsableDice(); //ムーブに使えるダイスリスト
     this._turnpos = ((p) => (this._turn == 1) ? p : 25 - p);
+    this._topt = ((f, d) => (f - d < 0) ? 0 : (f - d));
+    this._movablelist = [];
+    this._movablelistdirty = true;
   }
 
   // XGIDをパースし状態をローカル変数に格納
@@ -199,8 +202,9 @@ class Xgid {
   get maxcube()  { return this._maxcube; }
   get crawford() { return this._crawford; } //boolean
   get dbloffer() { return this._dbloffer; } //boolean
+  get movablelistlength() { return this._movablelist.length; }
 
-  //public functions
+//public and private(helper) functions
   checkCrawford(winnerscr, delta, loserscr) {
     return ((winnerscr + delta == this._matchsc - 1) && (loserscr != this._matchsc - 1)) ? true : false;
   }
@@ -237,7 +241,6 @@ class Xgid {
   }
 
   moveChequer2(move) {
-    const pos = this.position; //debug後削除可
     const turn = this.turn;
     const posary = this.position.split("");
     const frto = move.split("/");
@@ -259,7 +262,6 @@ class Xgid {
     }
     this.position = posary.join("");
     return this;
-
   }
 
   _use_dice(fr, to) {
@@ -276,6 +278,7 @@ class Xgid {
     } else if (to == 0) {
       this._usable_dice.splice(-1, 1);  //上記で使えなかったときは大きい目から使う
     }
+    this._movablelistdirty = true;
   }
 
   isValid() {
@@ -292,91 +295,195 @@ class Xgid {
   }
 
   isHitted(p) {
+    if (p == 0) { return false; }
     const pt = this._turnpos(p);
-    const ret =  (this._ptno[pt] == 1 && this._ptcol[pt] != this._turn);
-    return ret;
+    return (this._ptno[pt] == 1 && this._ptcol[pt] != this._turn);
   }
 
-  isMovable(fr, to, strict=false) {
+  existMyChequer(p) {
+    const pt = this._turnpos(p);
+    return (this._ptno[pt]  > 0 && this._ptcol[pt] == this._turn);
+  }
+
+  isMovable(fr, to, strict=true) {
     const movable = this.movablePoint(fr, strict);
     return movable.includes(to);
   }
 
-//★TODO 片方の目しか使えないときは大きい目を使わなければならない
-//★TODO 動かせる目があるときは必ず使わなければならない
-//例：XGID=-abHDA--a--a----abb-ba-b-A:0:0:1:61:0:0:0:5:0  OK:25/18 21/20 NG:25/24
-//★TODO 上がり目で動かせるべきでない駒を上げることができてしまう
-//例：XGID=-bbCCA--------------------:0:0:1:24:0:0:0:5:0  OK:5/3 4/0 NG:5/0
+  makeMovableList() {
+    if (!this._movablelistdirty) { return; } //新しいポジションのときだけ、リストを作り直す
+    this._movablelistdirty = false;
+    const piplist = this._dicePipList();
+    this._makeMovableList_step1(); //盤面から動かせる駒のリストを作る
+//console.log("makeMovableList()", piplist, this._movablelist);
+//this.DEBUGconsole("makeMovableList()", this._movablelist);
+    if (piplist.length == 3 && !this.zorome) { //下記チェックはダイス目が2つ使えるときのみ
+      this._useBiggerPip(); //片方の目しか使えないときは大きい目を使う
+      this._useBothPip(); //目を組み合わせて使えるときは両方を使わなければならない
+    }
+  }
 
-  _isMovableWithDice(fr, to) {
-    //オンザバーのときはそれしか動かせない
-    const bar = this._turnpos(25);
-    if (fr != 25 && this.get_ptno(bar) > 0) { return false; }
+  DEBUGconsole(id, list) {
+    let logstr = id;
+    logstr += " " + list.length;
+    for (const item of list) {
+      logstr += " [" + item + "]";
+    }
+    console.log(logstr);
+  }
 
-    //ベアオフのときはベアインしていることが必要
-    if (to == 0) {
-      for (let q=7; q<=25; q++) {
-        const qt = this._turnpos(q);
-        if (this.get_ptcol(qt) == this.turn && this.get_ptno(qt) > 0) { return false; }
+  _makeMovableList_step1() {
+    //盤面から動かせる駒のリストを作る
+    this._movablelist.length = 0;
+    const piplist = this._dicePipList();
+    const bar = 25;
+    for (let fr = 1; fr <= bar; fr++) {
+      if (!this.existMyChequer(fr)) { continue; }
+
+      const blockoffset = (this.zorome) ? 2 : 1;
+      let blocked = 0;
+      let piplistidx = 0;
+      for (const pip of piplist) {
+        const to = this._topt(fr, pip); //ムーブ先を計算
+//console.log("_makeMovableList_step1", fr, to, pip);
+        const diceodr = (this.zorome || piplistidx == 0) ? piplistidx + 1 : piplistidx;
+        piplistidx += 1;
+
+        if (blocked >= 2) { continue; }
+        //ブロックポイントの先とヒットポイントの先にはダイスの目を組み合わせて進めない
+
+        if (this.isBlocked(to)) {
+          blocked += blockoffset;
+          continue; //ブロックポイントには進めない
+          //23で、2も3もブロックされているときは5に進めないよう制御変数(blocked)をセット
+        }
+        if (this.isHitted(to)) {
+          blocked += blockoffset;
+          //ヒットポイントには進めるが、ダイスの目を組み合わせる先には進めないよう制御変数をセット
+          //ex. 44で、4にブロットがあるとき、ヒットせずに8には進めない
+        }
+        if (to == 0) {
+          if (!this._isBearIn()) { continue; } //ベアインしていないときはベアオフできない
+          if (fr - pip < 0) { //目を余らせてベアオフするときは
+            if (this._existBacker(fr)) { continue; } //後ろに駒がないこと
+            if (diceodr >= 2) { continue; } //ダイスの目を組み合わせて進めない
+          }
+        }
+
+        this._movablelist.push([fr, to, pip, diceodr]);
       }
     }
+  }
 
+  _useBiggerPip() {
+  //片方の目しか使えないときは大きい目を使うよう、使えないリストを削除
+    if (this._movablelist.length < 2) { return; } //動かせる先が一つなら確認不要
+    const lesserdice = this._usable_dice[0];
+    if (this._movablelist.every(mov => mov[2] == lesserdice)) { return; } //小さい目のみのときは確認不要
+    let delary = [];
+//console.log("_useBiggerPip() start", this._movablelist);
+    for (let idx = 0; idx < this._movablelist.length; idx++) {
+      const mov = this._movablelist[idx];
+      if (mov[3] != 1) { continue; } //目の組み合わせのときはスキップ
+      let xgidwork = new Xgid(this.xgidstr);
+      xgidwork = xgidwork.moveChequer2(mov[0] + "/" + mov[1]); //次の一手を動かしてみる
+      xgidwork._makeMovableList_step1(); //次に動かせる手があるかどうかを確認
+      if (xgidwork.movablelistlength != 0) { continue; }//次の手があれば削除候補ではない
+      if (mov[2] == lesserdice) { delary.push(idx); } //小さい目なら削除候補
+    }
+    for (let idx = delary.length -1; idx >= 0; idx--) {//spliceの破壊的処理のため、降順で実行
+      this._movablelist.splice(delary[idx], 1); //削除候補にマークされたものを削除
+    }
+//console.log("_useBiggerPip() return", delary, this._movablelist);
+  }
+
+  _useBothPip() {
+  //目を組み合わせて使えるときは両方を使わなければならないよう、使えないリストを削除
+    let nextmove = [];
+    for (const mov of this._movablelist) {
+      if (mov[3] != 1) { nextmove.push(9); continue; } //目の組み合わせのときはリストを残す
+      let xgidwork = new Xgid(this.xgidstr);
+      xgidwork = xgidwork.moveChequer2(mov[0] + "/" + mov[1]); //次の一手を動かしてみる
+      xgidwork._makeMovableList_step1(); //次に動かせる手があるかどうかを確認
+      nextmove.push(xgidwork.movablelistlength); //1以上ならまだ動かせる。0ならそこで行き止まり
+    }
+    if (Math.max(...nextmove) == 0) { return; } //目を組み合わせて使う駒が一つもなければ、全て残す
+    for (let idx = 0; idx < nextmove.length; idx++) {
+      if (nextmove[idx] == 0) {
+        this._movablelist.splice(idx,1); //組み合わせで使えないムーブを削除
+      }
+    }
+  }
+
+  _dicePipList() {
+    const bar = this._turnpos(25);
     let piplist = [];
     let w = 0;
     for (const d of this._usable_dice) {
-      //オンザバーに2個以上あるときは、ダイスの目を組み合わせて使えない。ex.2ゾロで21ptに出られない
-      if (this.get_ptno(bar) >= 2) { w  = d; }
-      else                         { w += d; }
+      //オンザバーに2個以上あるときは、ダイスの目を組み合わせて使えない。ex.41で20ptに出られない
+      if (this._ptno[bar] >= 2) { w  = d; }
+      else                      { w += d; }
       if (!piplist.includes(d)) { piplist.push(d); }
       if (!piplist.includes(w)) { piplist.push(w); }
     }
-
-    const f_topt = ((f, d) => (f - d < 0) ? 0 : (f - d));
-    const f_existBacker = ((f) => {
-      for (let q = f+1; q<25; q++) {
-        const p = this._turnpos(q);
-        if (this._ptcol[p] == this._turn && this._ptno[p] > 0) { return true; }
-      }
-      return false;
-    });
-
-    const delta = (this.zorome) ? 2 : 1;
-    let blocked = 0;
-    let movable = [];
-    for (const d of piplist.sort((a, b) => a - b)) {
-      const p = f_topt(fr, d); //定数関数で計算
-      if (fr-d < 0 && f_existBacker(fr)) { continue; }
-      if (blocked < 2 && !this.isBlocked(p)) {
-         movable.push(p);
-      } else {
-         blocked += delta;
-      }
-    }
-    return movable.includes(to);
+    return piplist.sort((a, b) => a - b);
   }
 
-  movablePoint(fr, strict=false) {
-    //frの駒が進めるポイントをリストで返す(前＆ブロックポイント以外)
-    //strict=trueのときは、ダイスの目に従って進めるポイントを計算する
+  _isBearIn() {
+    for (let q = 7; q <= 25; q++) {
+      if (this.existMyChequer(q)) { return false; }
+    }
+    return true;
+  }
+
+  _existBacker(f) {
+    for (let q = f+1; q <= 25; q++) {
+      if (this.existMyChequer(q)) { return true; }
+    }
+    return false;
+  }
+
+  movablePoint(fr, strict=true) {
+    //frの駒が進めるポイントをリストで返す
+    //ダイスの目に従うかどうか(strict)で処理を分ける
+    if (strict) { return this._movePointStrict(fr); }
+    else        { return this._movePointNonStrict(fr); }
+  }
+
+  _movePointNonStrict(fr) {
+    //ダイスの目に従わない(strict=false)で、frの駒が進めるポイントをリストで返す
+    const bar = 25;
     let movable = [];
-    for (let p=0; p<fr; p++) {
-      if (!this.isBlocked(p)) {
-        if (strict && !this._isMovableWithDice(fr, p)) { continue; }
-        movable.push(p);
-      }
+    for (let to = 0; to < fr; to++) {
+      if (this.existMyChequer(bar) && fr != bar) { continue; } //オンザバーのときはそれしか動かせない
+      if (to == 0 && !this._isBearIn()) { continue; } //ベアオフのときはベアインしていることが必要
+      if (this.isBlocked(to)) { continue; } //ブロックポイントには進めない
+      //if (to == 0 && this._existBacker(fr)) { continue; } //目を余らせてベアオフのときは後ろに駒がないこと
+      movable.push(to);
+    }
+    return movable;
+  }
+
+  _movePointStrict(fr) {
+    //ダイスの目に従う(strict=true)で、frの駒が進めるポイントをリストで返す
+    const bar = 25;
+    let movable = [];
+    this.makeMovableList();
+    for (const movinfo of this._movablelist) {
+      if (fr != movinfo[0]) { continue; } //動かすポイントでない場合はスキップ
+      if (this.existMyChequer(bar) && fr != bar) { continue; } //オンザバーのときはそれしか動かせない
+      movable.push(movinfo[1]);
     }
     return movable;
   }
 
   moveFinished() {
+    const bar = 25;
     if (this._usable_dice.length == 0) { return true; } //使える目がなくなった時
-    for (let q = 1; q <= 25; q++) {
-      if (this._ptcol[q] != this.turn) { continue; } //自駒のある所を探して
-      const pt = this._turnpos(q);
-      for (const d of this._usable_dice) {
-        const ds = (pt - d < 0) ? 0 : (pt - d);
-        if (this.isMovable(pt, ds, true)) { return false; } //自駒がダイスの目に従って動かせればfalse
-      }
+    for (let q = 1; q <= bar; q++) {
+      if (!this.existMyChequer(q)) { continue; } //自駒のある所から
+      const movlist = this.movablePoint(q, true); //動かせる先がまだあれば false
+      if (movlist.length != 0) { return false; }
     }
     return true; //全く動かせる先がなければtrue
   }
@@ -389,6 +496,7 @@ class Xgid {
       usabledice.push(this.get_dice(1));
       usabledice.push(this.get_dice(1));
     }
+    this._movablelistdirty = true;
     return usabledice.sort(); //ベアオフで後ろから使うように昇順にしておく
   }
 
