@@ -110,6 +110,10 @@
               0 -2px  2px 0 rgba(  0,  0,  0, .1) inset;
   z-index:10;
 }
+.dragging{
+  z-index:999; /* DOMのstyle内に定義されているため、この設定は無視される */
+  opacity:0.7;
+}
 
 /* Point Triangles ------------------------------------- */
 .point{
@@ -122,20 +126,20 @@
   opacity:0.4;
 }
 .pt_dnev{
-  background:linear-gradient(to top    left,  var(--triangle-odd) 50%, transparent 50%) top left/  50.1% 100% no-repeat,
-             linear-gradient(to top    right, var(--triangle-odd) 50%, transparent 50%) top right/ 50.1% 100% no-repeat;
+  background:linear-gradient(to top    left,  var(--triangle-odd) 50%, transparent 50%) top left/  50.3% 100% no-repeat,
+             linear-gradient(to top    right, var(--triangle-odd) 50%, transparent 50%) top right/ 50.3% 100% no-repeat;
 }
 .pt_dnod{
-  background:linear-gradient(to top    left,  var(--triangle-evn) 50%, transparent 50%) top left/  50.1% 100% no-repeat,
-             linear-gradient(to top    right, var(--triangle-evn) 50%, transparent 50%) top right/ 50.1% 100% no-repeat;
+  background:linear-gradient(to top    left,  var(--triangle-evn) 50%, transparent 50%) top left/  50.3% 100% no-repeat,
+             linear-gradient(to top    right, var(--triangle-evn) 50%, transparent 50%) top right/ 50.3% 100% no-repeat;
 }
 .pt_upev{
-  background:linear-gradient(to bottom left,  var(--triangle-odd) 50%, transparent 50%) top left/  50.1% 100% no-repeat,
-             linear-gradient(to bottom right, var(--triangle-odd) 50%, transparent 50%) top right/ 50.1% 100% no-repeat;
+  background:linear-gradient(to bottom left,  var(--triangle-odd) 50%, transparent 50%) top left/  50.3% 100% no-repeat,
+             linear-gradient(to bottom right, var(--triangle-odd) 50%, transparent 50%) top right/ 50.3% 100% no-repeat;
 }
 .pt_upod{
-  background:linear-gradient(to bottom left,  var(--triangle-evn) 50%, transparent 50%) top left/  50.1% 100% no-repeat,
-             linear-gradient(to bottom right, var(--triangle-evn) 50%, transparent 50%) top right/ 50.1% 100% no-repeat;
+  background:linear-gradient(to bottom left,  var(--triangle-evn) 50%, transparent 50%) top left/  50.3% 100% no-repeat,
+             linear-gradient(to bottom right, var(--triangle-evn) 50%, transparent 50%) top right/ 50.3% 100% no-repeat;
 }
 
 /* Board Object settings ------------------------------------- */
