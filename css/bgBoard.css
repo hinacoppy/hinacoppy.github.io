@@ -17,7 +17,8 @@
 ---------------------------------------------------- */
 
   --point-width:calc(var(--pointWidthNum) * 1vw);
-  --board-height-max:calc(var(--boardHeightNum) * 1vw * 0.5625); /* 0.5625=1080/1920 */
+/*  --board-height-max:calc(var(--boardHeightNum) * 1vw * 0.5625); /* 0.5625=1080/1920 */
+  --board-height-max:calc(var(--boardHeightNum) * 1vh);
   --board-height:calc(var(--boardHeightNum) * 1vh);
   --board-width:calc(var(--boardWidthNum) * 1vw);
   --board-frame-size:calc(var(--frameSizeNum) * 1vw);
