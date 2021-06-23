@@ -127,13 +127,13 @@ class Xgid {
     else if (contact)             { this._gamesc[1] = [cubeprice, 3]; }
     else if (this._bgarea[0] > 0) { this._gamesc[1] = [cubeprice, 3]; }
     else if (this._gmarea[0] > 0) { this._gamesc[1] = [cubeprice, 2]; }
-    else                          { this._gamesc[1] = [cubeprice, 1]; }
+    else                          { this._gamesc[1] = [cubeprice, 2]; }
     if (this._boff[1] > 0)        { this._gamesc[0] = [cubeprice, 1]; }
     else if (this._dbloffer)      { this._gamesc[0] = [cubeprice, 1]; }
     else if (contact)             { this._gamesc[0] = [cubeprice, 3]; }
     else if (this._bgarea[1] > 0) { this._gamesc[0] = [cubeprice, 3]; }
     else if (this._gmarea[1] > 0) { this._gamesc[0] = [cubeprice, 2]; }
-    else                          { this._gamesc[0] = [cubeprice, 1]; }
+    else                          { this._gamesc[0] = [cubeprice, 2]; }
   }
 
   _have_contact() {
