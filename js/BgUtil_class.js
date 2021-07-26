@@ -13,8 +13,8 @@ class BgUtil {
     return  Math.pow(2, val);
   }
 
-  static calcCubeDisp(val, crawford) {
-    if (crawford) { return "Cr"; }
+  static calcCubeDisp(val, crawford, pos = 0) {
+    if (crawford && pos == 0) { return "Cr"; }
     const out = this.calcCubeVal(val);
     return (out <= 1) ? 64 : out;
   }

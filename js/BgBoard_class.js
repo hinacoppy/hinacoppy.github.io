@@ -29,7 +29,7 @@ class BgBoard {
     this.prepareSvgDice();
     this.mainBoard.addClass(boardtype);
     this.setDomNameAndStyle();
-    if (this.leftrightFlag) { this.flipHorizOrientation(); }
+    if (gamemode === 'problemPager' && rotation === 'cw') { this.flipHoriz(); }
   } //end of constructor()
 
   prepareSvgDice() {
@@ -223,18 +223,22 @@ class BgBoard {
     }
     this.showPosition(xg);
     this.showDiceAll(xg.get_turn(), xg.get_dice(1), xg.get_dice(2));
-    this.showCube(xg.get_cubepos(),xg.get_cube(),xg.get_dbloffer(),xg.get_crawford());
+    this.showCube(xg);
     if (!this.boardAppFlag) { this.showLabels(xg.get_turn()); }
   }
 
-  showCube(pos, val, offer, crawford){
+  showCube(xg){
+    const offer = xg.get_dbloffer();
+    const pos = (!(this.boardAppFlag && offer)) ? xg.get_cubepos() : -1 * xg.get_turn();
+    const val = (!(this.boardAppFlag && offer)) ? xg.get_cube() : xg.get_cube() + 1;
+    const crawford = xg.get_crawford();
     const cubepos = BgUtil.cvtTurnXg2Bd(pos);
-    const cubeval = BgUtil.calcCubeDisp(val, crawford);
+    const cubeval = BgUtil.calcCubeDisp(val, crawford, pos);
     const cubePosClass = ["cubepos0", "cubepos1", "cubepos2"];
     const cubePosJoin = cubePosClass.join(" ");
     const which = (this.topbottomFlag) ? cubepos : BgUtil.getBdOppo(cubepos);
     this.cube.text(cubeval).css(this.getPosObj(this.cubeX, this.cubeY[which]))
-             .removeClass(cubePosJoin).addClass(cubePosClass[cubepos])
+             .removeClass(cubePosJoin).addClass(cubePosClass[which])
              .toggleClass("cubeoffer", offer);
   }
 
@@ -364,7 +368,6 @@ class BgBoard {
     const duration = (hitflag) ? delay/2 : delay;
     this.chequer[ckerowner][idx].point = toabs;
     this.chequer[ckerowner][idx].stackidx = num;
-console.log("animateChequer ZINDEX", 50+num);
     const promise = this.chequer[ckerowner][idx].dom.css({"z-index": 50 + num}).animate(toPosition, duration).promise();
     this.showStackInfo(sf, toabs, num, toPosition, ckerowner);
 
@@ -556,7 +559,7 @@ console.log("animateChequer ZINDEX", 50+num);
     const py = Math.floor(pos.top / this.mainBoardHeight * 2);
     const pt = pos2ptz[px + py * 14];
 
-console.log("getDragEndPoint", pos, this.pointWidth, px, py, px+py*14, pt, player);
+//console.log("getDragEndPoint", pos, this.pointWidth, px, py, px+py*14, pt, player);
     if (pt == 0 || pt == 25) { return pt; }
     else {
       return (player == 1) ? pt : 25 - pt;
@@ -567,7 +570,7 @@ console.log("getDragEndPoint", pos, this.pointWidth, px, py, px+py*14, pt, playe
     const chker = this.chequer[player].find(elem => elem.domid == id);
     const pt = chker.point;
     const p = (player == 1) ? pt : 25 - pt;
-console.log("getDragStartPoint", id, player, pt);
+//console.log("getDragStartPoint", id, player, pt);
     return p;
   }
 
@@ -575,14 +578,14 @@ console.log("getDragStartPoint", id, player, pt);
     const aryreverse = this.chequer[player].reverse();
     const chker = aryreverse.find(elem => elem.point == pt); //一番上の(最後の)チェッカーを返す
     //const chker = this.chequer[player].find(elem => elem.point == pt);
-console.log("getChequerOnDragging", pt, player, chker);
+//console.log("getChequerOnDragging", pt, player, chker);
     return chker;
   }
 
   getChequerHitted(ptt, player) {
     const pt = (player == 1) ? 25 - ptt : ptt;
     const chker = this.chequer[player].find(elem => elem.point == pt);
-console.log("getOppoChequerAndGotoBar", ptt, pt, player, chker);
+//console.log("getOppoChequerAndGotoBar", ptt, pt, player, chker);
     return chker;
   }
 
