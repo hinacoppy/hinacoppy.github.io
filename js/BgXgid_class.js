@@ -140,15 +140,14 @@ class Xgid {
   }
 
   _have_contact() {
-    // 駒の色を見て、変化が2回あればコンタクトありと判断
-    let co = 0, bf = 0, cntct = 0;
-    for (let i=0; i<=25; i++) {
-      co = this._ptcol[i];
-      if (co == 0) { continue; }
-      if (bf != co) { cntct += 1; }
-      bf = co;
+    // 前から順に駒の色を見て - から + への変化があればコンタクトありと判断
+    let start = false;
+    for (let i = 0; i <= 25; i++) {
+      const co = this._ptcol[i];
+      if (co < 0) { start = true; }
+      if (co > 0 && start) { return true; }
     }
-    return (cntct > 2);
+    return false;
   }
 
   // getter functions
