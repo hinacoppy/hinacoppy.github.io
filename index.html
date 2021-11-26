@@ -124,90 +124,7 @@ hkitagoさんのスコアボードアプリの動きが素晴らしかったの�
 </tr>
 <tr>
 <td></td>
-<td>
-<table class="innertable">
-<tr>
-<td><a href="/FairyGammon/osampo/"><img src="/FairyGammon/osampo/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/FairyGammon/osampo/">おさんぽギャモンアプリ (Half Gammon)</a></div>
-<div class="itemdesc">
-おさんぽギャモンは、ボードのマス数を12マスにダイスの目を3までにした、ハーフギャモンです。<br>
-チェッカーのフォントを変更し、ちょっとだけ可愛くしてみました。(2021/11)
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/FairyGammon/micro/"><img src="/FairyGammon/micro/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/FairyGammon/micro/">マイクロギャモン (Micro Gammon)</a></div>
-<div class="itemdesc">
-バックギャモンのボードのマス数を16マスにしダイスの目を4までにした、マイクロギャモンです。<br>
-普通のバックギャモンよりサクサクと進めることができるようです。
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/FairyGammon/short/"><img src="/FairyGammon/short/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/FairyGammon/short/">ショートギャモン (Short Gammon)</a></div>
-<div class="itemdesc">
-バックギャモンのボードのマス数を20マスにしダイスの目を5までにした、ショートギャモンです。<br>
-普通のバックギャモンよりちょっとだけスピーディに進めることができるようです。
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/FairyGammon/normal/"><img src="/FairyGammon/normal/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/FairyGammon/normal/">ノーマルバックギャモン(新) (Normal Backgammon)</a></div>
-<div class="itemdesc">
-フェアリーギャモンのソースコードで書き直したノーマルのバックギャモンアプリです。<br>
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/FairyGammon/long/"><img src="/FairyGammon/long/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/FairyGammon/long/">ロングギャモン (Long Gammon)</a></div>
-<div class="itemdesc">
-バックギャモンのボードのマス数を28マスにしダイスの目を7までにした、ロングギャモンです。<br>
-普通のバックギャモンと同じ戦略性があり、少しスローリーなゲーム展開になるようです。
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/FairyGammon/hyper/"><img src="/FairyGammon/hyper/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/FairyGammon/hyper/">ハイパーギャモン (Hyper Gammon)</a></div>
-<div class="itemdesc">
-22, 23, 24ポイントに、3コマしかないゲームです。<br>
-終盤に少ししか動かせるコマがない局面の練習になるかもしれません。
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/FairyGammon/nack/"><img src="/FairyGammon/nack/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/FairyGammon/nack/">ナックギャモン (Nack Gammon)</a></div>
-<div class="itemdesc">
-Nack Ballard が、ポジショナルプレイの練習のために考案したものです。<br>
-バックマンが4個あるため、ランニングゲームやブリッツにはなりにくく、プライミングゲームになりやすいという特徴があります。<br>
-※やり込んでいないので、他サイトの受け売りです(汗)。
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/FairyGammon/sugo8/"><img src="/FairyGammon/sugo8/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/FairyGammon/sugo8/">双八 (Dice 8 Gammon)</a></div>
-<div class="itemdesc">
-バックギャモンで、ダイスの出目を8までにしたフェアリーギャモンです。<br>
-1ロールでの平均ピップ数が増えるので、スピーディに進みます。また、プライムを飛び越える目が増えるので、戦略が変わります。
-</div>
-</td>
-</tr>
-</table>
-</td>
+<td><div id="includefairy"></div></td>
 </tr>
 <tr>
 <td><a href="/bgKifuViewer-fa/"><img src="/bgKifuViewer-fa/icon/android-chrome-96x96.png"></a></td>
@@ -316,8 +233,12 @@ MAT形式のバックギャモン棋譜ファイルから、ゲーム局面を�
 
 <footer id="footer" class="footer">(C) <span onclick="linkto();">Hina</span>coppy. 2018 -- 2021</footer>
 
+<script src="/js/jquery-3.6.0.min.js"></script>
 <script>
 function linkto() { location.href = "/ProblemPager/"; }
+
+//フェアリーギャモンのメニューを挿し込む
+$("#includefairy").load("/FairyGammon/index.html table");
 </script>
 </body>
 </html>
