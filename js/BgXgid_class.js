@@ -387,8 +387,11 @@ class Xgid {
     for (let idx = 0; idx < this._movablelist.length; idx++) {
       const mov = this._movablelist[idx];
       if (mov[3] != 1) { continue; } //目の組み合わせのときはスキップ
-      let xgidwork = new Xgid(this.xgidstr);
-      xgidwork = xgidwork.moveChequer2(mov[0] + "/" + mov[1]); //次の一手を動かしてみる
+      let xgidwork = new Xgid(this.xgidstr, this.gametype); //次の一手を動かしてみる
+      if (xgidwork.isHitted(mov[1])) {
+        xgidwork = xgidwork.moveChequer2(mov[1] + "/" + this.param1);
+      }
+      xgidwork = xgidwork.moveChequer2(mov[0] + "/" + mov[1]);
       xgidwork._makeMovableList_step1(); //次に動かせる手があるかどうかを確認
       if (xgidwork.movablelistlength != 0) { continue; }//次の手があれば削除候補ではない
       if (mov[2] == lesserdice) { delary.push(idx); } //小さい目なら削除候補
@@ -404,8 +407,11 @@ class Xgid {
     let nextmove = [];
     for (const mov of this._movablelist) {
       if (mov[3] != 1) { nextmove.push(9); continue; } //目の組み合わせのときはリストを残す
-      let xgidwork = new Xgid(this.xgidstr);
-      xgidwork = xgidwork.moveChequer2(mov[0] + "/" + mov[1]); //次の一手を動かしてみる
+      let xgidwork = new Xgid(this.xgidstr, this.gametype); //次の一手を動かしてみる
+      if (xgidwork.isHitted(mov[1])) {
+        xgidwork = xgidwork.moveChequer2(mov[1] + "/" + this.param1);
+      }
+      xgidwork = xgidwork.moveChequer2(mov[0] + "/" + mov[1]);
       xgidwork._makeMovableList_step1(); //次に動かせる手があるかどうかを確認
       nextmove.push(xgidwork.movablelistlength); //1以上ならまだ動かせる。0ならそこで行き止まり
     }
