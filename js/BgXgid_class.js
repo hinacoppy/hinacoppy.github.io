@@ -387,6 +387,7 @@ class Xgid {
     for (let idx = 0; idx < this._movablelist.length; idx++) {
       const mov = this._movablelist[idx];
       if (mov[3] != 1) { continue; } //目の組み合わせのときはスキップ
+      if (mov[0] == this.param1) { continue; } //オンザバーからの手は削除候補ではない
       let xgidwork = new Xgid(this.xgidstr, this.gametype); //次の一手を動かしてみる
       if (xgidwork.isHitted(mov[1])) {
         xgidwork = xgidwork.moveChequer2(mov[1] + "/" + this.param1);
@@ -407,6 +408,7 @@ class Xgid {
     let nextmove = [];
     for (const mov of this._movablelist) {
       if (mov[3] != 1) { nextmove.push(9); continue; } //目の組み合わせのときはリストを残す
+      if (mov[0] == this.param1) { nextmove.push(9); continue; } //オンザバーからの手は削除候補ではない
       let xgidwork = new Xgid(this.xgidstr, this.gametype); //次の一手を動かしてみる
       if (xgidwork.isHitted(mov[1])) {
         xgidwork = xgidwork.moveChequer2(mov[1] + "/" + this.param1);
@@ -416,7 +418,7 @@ class Xgid {
       nextmove.push(xgidwork.movablelistlength); //1以上ならまだ動かせる。0ならそこで行き止まり
     }
     if (Math.max(...nextmove) == 0) { return; } //目を組み合わせて使う駒が一つもなければ、全て残す
-    for (let idx = 0; idx < nextmove.length; idx++) {
+    for (let idx = nextmove.length -1; idx >= 0; idx--) {//spliceの破壊的処理のため、降順で実行
       if (nextmove[idx] == 0) {
         this._movablelist.splice(idx,1); //組み合わせで使えないムーブを削除
       }
