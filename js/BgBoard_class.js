@@ -29,7 +29,7 @@ class BgBoard {
     this.prepareSvgDice();
     this.mainBoard.addClass(boardtype);
     this.setDomNameAndStyle();
-    if (gamemode === 'problemPager' && rotation === 'cw') { this.flipHoriz(); }
+    if (gamemode === 'problemPager' && this.leftrightFlag) { this.flipHorizOrientation(); }
   } //end of constructor()
 
   prepareSvgDice() {
@@ -164,12 +164,8 @@ class BgBoard {
     this.flipHoriz();
     this.pointX[26] = (this.leftrightFlag) ? this.leftSideOff  - this.offtrayMargin
                                            : this.rightSideOff + this.offtrayMargin;
-//    this.leftrightFlag = !this.leftrightFlag;
-//    this.showBoard(this.xgidstr);
-  }
-
-  flipHorizFlag() {
     this.leftrightFlag = !this.leftrightFlag;
+    this.showBoard(this.xgidstr);
   }
 
   flipHoriz() {
@@ -246,7 +242,7 @@ class BgBoard {
     switch( BgUtil.cvtTurnXg2Bd(turn) ) {
     case 0:
       this.showDice(1, d1, 0);
-      this.showDice(2, d2, 0);
+      this.showDice(2, 0, d2);
       break;
     case 1:
       this.showDice(1, d1, d2);
