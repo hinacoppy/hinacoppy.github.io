@@ -162,10 +162,12 @@ class BgBoard {
 
   flipHorizOrientation() {
     this.flipHoriz();
-    this.pointX[26] = (this.leftrightFlag) ? this.leftSideOff  - this.offtrayMargin
-                                           : this.rightSideOff + this.offtrayMargin;
-    this.leftrightFlag = !this.leftrightFlag;
+    this.pointX[26] = (this.leftrightFlag) ? this.leftSideOff : this.rightSideOff;
     this.showBoard(this.xgidstr);
+  }
+
+  flipHorizFlag() {
+    this.leftrightFlag = !this.leftrightFlag;
   }
 
   flipHoriz() {
@@ -523,14 +525,13 @@ class BgBoard {
     this.upperlabelY = - frameSizeNum * this.vw;
     this.lowerlabelY = this.mainBoardHeight;
 
-    this.leftSideOff = 0;
-    this.rightSideOff = this.mainBoardWidth - this.pieceWidth;
+    this.leftSideOff = 0 - this.offtrayMargin;
+    this.rightSideOff = this.mainBoardWidth - this.pieceWidth + this.offtrayMargin;
 
     if (this.boardAppFlag) {
       this.pointX[26] += offtrayMarginNum;
     } else {
-      this.pointX[26] = (this.leftrightFlag) ? this.leftSideOff  - this.offtrayMargin
-                                             : this.rightSideOff + this.offtrayMargin;
+      this.pointX[26] = (this.leftrightFlag) ? this.leftSideOff : this.rightSideOff;
     }
   }
 
