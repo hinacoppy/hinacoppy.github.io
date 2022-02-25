@@ -6,6 +6,9 @@
   border:solid #00f 2px;
 }
 .modalContainer button{ /* ボタン */
+  all:initial; /* ボタンCSS初期化 */
+  background-color:#eee;
+  padding:0 5px;
   cursor:pointer;
   margin-right:5px;
 }
