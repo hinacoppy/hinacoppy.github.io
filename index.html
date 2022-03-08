@@ -97,20 +97,21 @@ hkitagoさんのスコアボードアプリの動きが素晴らしかったの�
 </td>
 </tr>
 <tr>
-<td><a href="/bgBoardApp/"><img src="/bgBoardApp/icon/android-chrome-96x96.png"></a></td>
+<td><a href="/GammonApp/normal/"><img src="/GammonApp/normal/icon/android-chrome-96x96.png"></a></td>
 <td>
-<div class="itemtitle">◆<a href="/bgBoardApp/">バックギャモンアプリ (Normal Backgammon)</a></div>
+<div class="itemtitle">◆<a href="/GammonApp/normal/">バックギャモンアプリ (Normal Backgammon)</a></div>
 <div class="itemdesc">
-バックギャモンをタブレット上で遊べるようにしたアプリです。→<a href="/bgBoardApp/help.html">トリセツ</a><br>
+バックギャモンをタブレット上で遊べるようにしたアプリです。→<a href="/GammonApp/normal/help.html">トリセツ</a><br>
 人vs人の対戦機能しかありません。(vsコンピュータ、vs世界中の人、と対戦できるアプリではありません。)<br>
-クロック機能、棋譜ダウンロード機能を追加しました。(2021/7)
+クロック機能、棋譜ダウンロード機能を追加しました。(2021/7)<br>
+下記フェアリーギャモンのコードで書き換えたものに差し替えました。(2022/3)
 </div>
 </td>
 </tr>
 <tr>
-<td><a href="/FairyGammon/"><img src="/FairyGammon/icon/android-chrome-96x96.png"></a></td>
+<td><a href="/GammonApp/"><img src="/GammonApp/icon/android-chrome-96x96.png"></a></td>
 <td>
-<div class="itemtitle">◆<a href="/FairyGammon/">フェアリーギャモン (変則ルールギャモン)</a></div>
+<div class="itemtitle">◆<a href="/GammonApp/">フェアリーギャモン (変則ルールギャモン)</a></div>
 <div class="itemdesc">
 バックギャモンのルールに手を加えた、変則的なルールのギャモンをタブレットやPC上で遊べるようにしました。
 <br><br>
@@ -123,7 +124,7 @@ hkitagoさんのスコアボードアプリの動きが素晴らしかったの�
 </tr>
 <tr>
 <td></td>
-<td><div id="includefairy"></div></td>
+<td><div id="includeGammonApp"></div></td>
 </tr>
 <tr>
 <td><a href="/bgKifuViewer-fa/"><img src="/bgKifuViewer-fa/icon/android-chrome-96x96.png"></a></td>
@@ -237,7 +238,7 @@ MAT形式のバックギャモン棋譜ファイルから、ゲーム局面を�
 function linkto() { location.href = "/ProblemPager/"; }
 
 //フェアリーギャモンのメニューを挿し込む
-$("#includefairy").load("/FairyGammon/index.html table");
+$("#includeGammonApp").load("/GammonApp/index.html table");
 </script>
 </body>
 </html>
