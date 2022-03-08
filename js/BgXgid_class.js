@@ -1,13 +1,22 @@
 // BgXgid_class.js
+// FairyGammon Version (XX pt Board and YY chequer)
 'use strict';
 
 class Xgid {
-  constructor(xgid) {
-    if (xgid == null || xgid == "") {
-      xgid = "XGID=--------------------------:0:0:0:00:0:0:0:0:0";
-    }
-    this._xgid = xgid;
-    this._position = "--------------------------";
+  constructor(xgid = null, gametype = "normal") {
+    this.gametype = gametype;
+    const gameparam = BgUtil.getGametypeParam(this.gametype);
+    this.ckrnum = gameparam[1]; //chequer num
+    this.param0 = gameparam[0]; //my inner point = point num of one area
+    this.param1 = this.param0 * 4 + 1; //array param of XGID position
+    this.param2 = this.param0 * 4 + 2; //length of XGID position
+    this.param3 = this.param0 + 1;     //my bar point
+    this.param4 = this.param0 * 3;     //oppo bar point
+    this.param5 = this.param0 * 3 + 1; //oppo inner point
+    this.dicemx = gameparam[2]; //dice pip max
+
+    this._xgid = xgid ? xgid : "XGID=" + "-".repeat(this.param2) + ":0:0:0:00:0:0:0:0:0";
+    this._position = "-".repeat(this.param2);
     this._cube = 0;
     this._cubepos = 0;
     this._turn = 0;
@@ -20,8 +29,8 @@ class Xgid {
     this._matchsc = 0;
     this._maxcube = 0;
     this._crawford = false;
-    this._ptno = new Array(26);
-    this._ptcol = new Array(26);
+    this._ptno = new Array(this.param2);
+    this._ptcol = new Array(this.param2);
     this._pip = [0, 0];
     this._boff = [0, 0];
     this._gamesc = [[], []];
@@ -34,7 +43,7 @@ class Xgid {
     this._calc_score(); // ゲームスコアを計算
     this.zorome = (this._dice != "00" && this.get_dice(1) == this.get_dice(2));
     this._usable_dice = this._setUsableDice(); //ムーブに使えるダイスリスト
-    this._turnpos = ((p) => (this._turn == 1) ? p : 25 - p);
+    this._turnpos = ((p) => (this._turn == 1) ? p : this.param1 - p);
     this._topt = ((f, d) => (f - d < 0) ? 0 : (f - d));
     this._movablelist = [];
     this._movablelistdirty = true;
@@ -80,12 +89,12 @@ class Xgid {
   //ついでに、ピップ数とベアオフチェッカーを数えておく
   _parse_position(pt) {
     this._pip[0]  = this._pip[1]  = 0;
-    this._boff[0] = this._boff[1] = 15;
+    this._boff[0] = this._boff[1] = this.ckrnum;
     this._bgarea[0] = this._bgarea[1] = 0;
     this._gmarea[0] = this._gmarea[1] = 0;
 
     const posary = pt.split("");  // 一文字ずつに分解
-    for (let i=0; i<=25; i++) {
+    for (let i = 0; i <= this.param1; i++) {
       const asc = posary[i].charCodeAt(0);
       if (asc == "-".charCodeAt(0)) {
         this._ptno[i] = 0; this._ptcol[i] = 0;
@@ -93,15 +102,15 @@ class Xgid {
         this._ptno[i] = asc - "a".charCodeAt(0) + 1;
         this._ptcol[i] = -1;
         this._boff[1] -= this._ptno[i];
-        if (i< 7) { this._bgarea[1] += this._ptno[i]; }
-        if (i<19) { this._gmarea[1] += this._ptno[i]; }
-        this._pip[1] += this._ptno[i] * (25 - i); // ピップ数を計算
+        if (i < this.param3) { this._bgarea[1] += this._ptno[i]; }
+        if (i < this.param5) { this._gmarea[1] += this._ptno[i]; }
+        this._pip[1] += this._ptno[i] * (this.param1 - i); // ピップ数を計算
       } else if (asc >= "A".charCodeAt(0) && asc <= "Z".charCodeAt(0)) {
         this._ptno[i] = asc - "A".charCodeAt(0) + 1;
         this._ptcol[i] = 1;
         this._boff[0] -= this._ptno[i];
-        if (i>18) { this._bgarea[0] += this._ptno[i]; }
-        if (i> 6) { this._gmarea[0] += this._ptno[i]; }
+        if (i > this.param4) { this._bgarea[0] += this._ptno[i]; }
+        if (i > this.param0) { this._gmarea[0] += this._ptno[i]; }
         this._pip[0] += this._ptno[i] * (i - 0); // ピップ数を計算
       }
     } // for
@@ -142,7 +151,7 @@ class Xgid {
   _have_contact() {
     // 前から順に駒の色を見て - から + への変化があればコンタクトありと判断
     let start = false;
-    for (let i = 0; i <= 25; i++) {
+    for (let i = 0; i <= this.param1; i++) {
       const co = this._ptcol[i];
       if (co < 0) { start = true; }
       if (co > 0 && start) { return true; }
@@ -219,15 +228,14 @@ class Xgid {
     return (numaft == 0) ? "-" : String.fromCharCode(numaft + charcd - 1);
   }
 
-
-  moveChequer(pos, move, turn) {
+  getMovedPosition(pos, move, turn) { //only used in BgKifuViewer(BgGame_class.js)
     let frto, fr, to, fpt, tpt, bar;
     const oppo = (-1) * turn;
     let posary = pos.split("");
-    for (let mv of BgUtil.cleanupMoveStr(move, this._xgid)) {
+    for (let mv of BgMoveStrUtil.cleanupMoveStr(move, this._xgid)) {
       frto = mv.split("/");
-      fr = parseInt(frto[0]); fpt = (turn == 1) ? fr : 25 - fr;
-      to = parseInt(frto[1]); tpt = (turn == 1) ? to : 25 - to; bar = (turn == 1) ? 0 : 25;
+      fr = parseInt(frto[0]); fpt = (turn == 1) ? fr : this.param1 - fr;
+      to = parseInt(frto[1]); tpt = (turn == 1) ? to : this.param1 - to; bar = (turn == 1) ? 0 : this.param1;
       if (isNaN(fr)) { break; }
       if (fr > to) { //normal move
         posary[fpt] = this._incdec(posary[fpt], -1, turn);
@@ -284,8 +292,8 @@ class Xgid {
   }
 
   isValid() {
-    if (this._dice_ary[1] > 6 || this._dice_ary[1] < 0) { return false; }
-    if (this._dice_ary[2] > 6 || this._dice_ary[2] < 0) { return false; }
+    if (this._dice_ary[1] > this.dicemx || this._dice_ary[1] < 0) { return false; }
+    if (this._dice_ary[2] > this.dicemx || this._dice_ary[2] < 0) { return false; }
     if (this._boff[0] < 0 || this._boff[1] < 0) { return false; }
     return true;
   }
@@ -317,28 +325,17 @@ class Xgid {
     this._movablelistdirty = false;
     const piplist = this._dicePipList();
     this._makeMovableList_step1(); //盤面から動かせる駒のリストを作る
-//console.log("makeMovableList()", piplist, this._movablelist);
-//this.DEBUGconsole("makeMovableList()", this._movablelist);
     if (piplist.length == 3 && !this.zorome) { //下記チェックはダイス目が2つ使えるときのみ
       this._useBiggerPip(); //片方の目しか使えないときは大きい目を使う
       this._useBothPip(); //目を組み合わせて使えるときは両方を使わなければならない
     }
   }
 
-  DEBUGconsole(id, list) {
-    let logstr = id;
-    logstr += " " + list.length;
-    for (const item of list) {
-      logstr += " [" + item + "]";
-    }
-    console.log(logstr);
-  }
-
   _makeMovableList_step1() {
     //盤面から動かせる駒のリストを作る
     this._movablelist.length = 0;
     const piplist = this._dicePipList();
-    const bar = 25;
+    const bar = this.param1;
     for (let fr = 1; fr <= bar; fr++) {
       if (!this.existMyChequer(fr)) { continue; }
 
@@ -347,7 +344,6 @@ class Xgid {
       let piplistidx = 0;
       for (const pip of piplist) {
         const to = this._topt(fr, pip); //ムーブ先を計算
-//console.log("_makeMovableList_step1", fr, to, pip);
         const diceodr = (this.zorome || piplistidx == 0) ? piplistidx + 1 : piplistidx;
         piplistidx += 1;
 
@@ -383,7 +379,6 @@ class Xgid {
     const lesserdice = this._usable_dice[0];
     if (this._movablelist.every(mov => mov[2] == lesserdice)) { return; } //小さい目のみのときは確認不要
     let delary = [];
-//console.log("_useBiggerPip() start", this._movablelist);
     for (let idx = 0; idx < this._movablelist.length; idx++) {
       const mov = this._movablelist[idx];
       if (mov[3] != 1) { continue; } //目の組み合わせのときはスキップ
@@ -400,7 +395,6 @@ class Xgid {
     for (let idx = delary.length -1; idx >= 0; idx--) {//spliceの破壊的処理のため、降順で実行
       this._movablelist.splice(delary[idx], 1); //削除候補にマークされたものを削除
     }
-//console.log("_useBiggerPip() return", delary, this._movablelist);
   }
 
   _useBothPip() {
@@ -426,7 +420,7 @@ class Xgid {
   }
 
   _dicePipList() {
-    const bar = this._turnpos(25);
+    const bar = this._turnpos(this.param1);
     let piplist = [];
     let w = 0;
     for (const d of this._usable_dice) {
@@ -440,14 +434,14 @@ class Xgid {
   }
 
   _isBearIn() {
-    for (let q = 7; q <= 25; q++) {
+    for (let q = this.param3; q <= this.param1; q++) {
       if (this.existMyChequer(q)) { return false; }
     }
     return true;
   }
 
   _existBacker(f) {
-    for (let q = f+1; q <= 25; q++) {
+    for (let q = f+1; q <= this.param1; q++) {
       if (this.existMyChequer(q)) { return true; }
     }
     return false;
@@ -462,7 +456,7 @@ class Xgid {
 
   _movePointNonStrict(fr) {
     //ダイスの目に従わない(strict=false)で、frの駒が進めるポイントをリストで返す
-    const bar = 25;
+    const bar = this.param1;
     let movable = [];
     for (let to = 0; to < fr; to++) {
       if (this.existMyChequer(bar) && fr != bar) { continue; } //オンザバーのときはそれしか動かせない
@@ -476,7 +470,7 @@ class Xgid {
 
   _movePointStrict(fr) {
     //ダイスの目に従う(strict=true)で、frの駒が進めるポイントをリストで返す
-    const bar = 25;
+    const bar = this.param1;
     let movable = [];
     this.makeMovableList();
     for (const movinfo of this._movablelist) {
@@ -488,7 +482,7 @@ class Xgid {
   }
 
   moveFinished() {
-    const bar = 25;
+    const bar = this.param1;
     if (this._usable_dice.length == 0) { return true; } //使える目がなくなった時
     for (let q = 1; q <= bar; q++) {
       if (!this.existMyChequer(q)) { continue; } //自駒のある所から
@@ -510,8 +504,8 @@ class Xgid {
     return usabledice.sort(); //ベアオフで後ろから使うように昇順にしておく
   }
 
-  initialize(pos="--------------------------", newmatch=false, matchlen=0) {
-    this.position = pos;
+  initialize(pos, newmatch=false, matchlen=0) {
+    this.position = pos ? pos : "-".repeat(this.param2);
     this.matchsc  = matchlen;
     this.sc_me    = (newmatch) ? 0: this.sc_me;
     this.sc_yu    = (newmatch) ? 0: this.sc_yu;
@@ -525,11 +519,11 @@ class Xgid {
   }
 
   isCloseout(turn) {
-    const bar = (turn == 1) ? 0 : 25;
+    const bar = (turn == 1) ? 0 : this.param1;
     if (this.get_ptno(bar) == 0) { return false; } //オンザバーでなければfalse
 
-    const offset = (turn == 1) ? 1 : 19;
-    for (let p = 0; p < 6; p++) {
+    const offset = (turn == 1) ? 1 : this.param5;
+    for (let p = 0; p < this.dicemx; p++) {
       const q = p + offset;
       if (!(this.get_ptno(q) >= 2 && this.get_ptcol(q) == turn)) {
         return false; //インナーボードに隙間があればfalse
