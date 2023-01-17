@@ -48,6 +48,9 @@ a{
 .itemdesc{
   padding-left:20px;
 }
+.itemnone{
+  list-style-type:none;
+}
 .footer{
   text-align:right;
 }
@@ -126,7 +129,7 @@ hkitagoさんのスコアボードアプリの動きが素晴らしかったの�
 </tr>
 <tr>
 <td></td>
-<td><div id="includeGammonApp"></div></td>
+<td id="includeGammonApp"></td>
 </tr>
 <tr>
 <td><a href="/bgKifuViewer-fa/"><img src="/bgKifuViewer-fa/icon/android-chrome-96x96.png"></a></td>
@@ -193,7 +196,7 @@ MAT形式のバックギャモン棋譜ファイルから、ゲーム局面を�
 <p>「ホーム画面に追加」は各端末OSの標準ブラウザで実行する必要があります。ご注意ください。</p>
 
 <h4>●Android端末の場合</h4>
-<ul style="list-style-type:none;">
+<ul class="itemnone">
 <li>(1)Chromeで上記リンク先のアプリを開く
 <li>(2)設定アイコン(右上の３点のアイコン)をタップ
 <li>(3)「ホーム画面に追加」をタップ
@@ -206,7 +209,7 @@ MAT形式のバックギャモン棋譜ファイルから、ゲーム局面を�
 
 
 <h4>●Apple端末(iPhone, iPadなど)の場合</h4>
-<ul style="list-style-type:none;">
+<ul class="itemnone">
 <li>(1)Safariで上記リンク先のアプリを開く
 <li>(2)送信アイコン(□から↑が突き出ているアイコン)をタップ
 <li>(3)「ホーム画面に追加」をタップ
@@ -226,7 +229,7 @@ MAT形式のバックギャモン棋譜ファイルから、ゲーム局面を�
 <p>※スマホのOSバージョンにより、操作方法が異なるかもしれません。その際はインターネット等で調べてください。</p>
 
 <h4>●Android端末の場合</h4>
-<ul style="list-style-type:none;">
+<ul class="itemnone">
 <li>(1)「設定」アプリを選択
 <li>(2)「ディスプレイ」を選択
 <li>(3)「スリープ」を選択
@@ -236,7 +239,7 @@ MAT形式のバックギャモン棋譜ファイルから、ゲーム局面を�
 <p>参考：<a href="https://www.ymobile.jp/support/faq/view/23557">［Android 7.0/7.1］画面の自動ロック（スリープ）時間の変更方法を教えてください</a></p>
 
 <h4>●Apple端末(iPhone, iPadなど)の場合</h4>
-<ul style="list-style-type:none;">
+<ul class="itemnone">
 <li>(1)「設定」アプリを選択
 <li>(2)「画面表示と明るさ」を選択
 <li>(3)「自動ロック」を選択
@@ -250,14 +253,27 @@ MAT形式のバックギャモン棋譜ファイルから、ゲーム局面を�
 
 <hr>
 
-<footer id="footer" class="footer">(C) <span onclick="linkto();">Hina</span>coppy. 2018 -- 2023</footer>
+<footer class="footer">(C) <span onclick="linkto();">Hina</span>coppy. 2018 -- 2023</footer>
 
-<script src="/js/jquery-3.6.1.min.js"></script>
 <script>
 function linkto() { location.href = "/ProblemPager/"; }
 
+//idのところにurlのコンテンツのparamの部分を挿入する。
+function load(id, url, param = "body") {
+  fetch(url)
+    .then(response => response.text())
+    .then(data => {
+      const parser = new DOMParser();
+      const html = parser.parseFromString(data, "text/html");
+      const elem = html.querySelector(param);
+      const insertTo = document.getElementById(id);
+      insertTo.appendChild(elem);
+    });
+}
+
 //フェアリーギャモンのメニューを挿し込む
-$("#includeGammonApp").load("/GammonApp/index.html table");
+load("includeGammonApp", "/GammonApp/index.html", "table");
+//$("#includeGammonApp").load("/GammonApp/index.html table");
 </script>
 </body>
 </html>
