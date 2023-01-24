@@ -4,6 +4,8 @@
 .modalContainer{
   background-color:#ffe;
   border:solid #00f 2px;
+  position:absolute;
+  z-index:99;
 }
 .modalContainer button{ /* ボタン */
   all:initial; /* ボタンCSS初期化 */

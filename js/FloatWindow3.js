@@ -101,8 +101,8 @@ class FloatWindow {
 
   show() {
     this.hover.style.height = this.max_height;
-    this.hover.style.display = "";
-    this.body.style.display = ""; //最小化時にも再表示
+    this.hover.style.display = "block";
+    this.body.style.display = "block"; //最小化時にも再表示
   }
 
   hide() {
@@ -116,6 +116,6 @@ class FloatWindow {
 
   max() {
     this.hover.style.height = this.max_height;
-    this.body.style.display = "";
+    this.body.style.display = "block";
   }
 }
