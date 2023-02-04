@@ -9,6 +9,7 @@
 // ・クラス化
 // 2021.8.2 hinacoppy
 // 2023.1.21 脱jQuery
+// 2023.2.2  touchイベントに対応
 "use strict";
 
 class FloatWindow {
@@ -17,7 +18,7 @@ class FloatWindow {
     this.setDomNames(option);
     this.setFloatWindowStyle(option);
     this.setButtonEvent();
-    this.setDragEvent();
+    this.setDragEvent(this.head, this.hover);
   }
 
   setOption(userOption) {
@@ -31,7 +32,8 @@ class FloatWindow {
             left:     null,
             top:      null,
             width:    "300px",
-            height:   "300px"};
+            height:   "300px",
+            initshow: false,};
     const option = Object.assign({}, defaultOption, userOption);
     return option;
   }
@@ -56,10 +58,10 @@ class FloatWindow {
 
     this.max_height = this.hover.clientHeight + "px";
     this.min_height = this.head.clientHeight + "px";
-    this.hover.style.display = "none"; //すべてを計算した後に非表示にする
+    this.hover.style.display = option.initshow ? "block" : "none"; //すべてを計算した後に表示/非表示にする
   }
 
-  setDragEvent() {
+  setDragEvent(target, container) {
     //下記イベントハンドラ内で使うローカル変数
     let draggingflg = false;
     let pagex;
@@ -67,36 +69,70 @@ class FloatWindow {
     let pos_left;
     let pos_top;
 
-    this.hover.addEventListener("dragstart", (e) => {
+    const evfn_touchstart = ((evt) => {
+      evt.preventDefault(); //touchstartの後に発火するマウス関連イベント(mousedown)を抑止する
+      if (evt.target === this.closebtn || evt.target === this.maxbtn || evt.target === this.minbtn) {
+        evt.target.click(); //preventDefault()でclickイベントが抑止されているため、改めてclickイベントを発火させる
+        return;
+      }
+
+      //マウスイベントとタッチイベントの差異を吸収
+      if (evt.type === "mousedown") {
+        target.addEventListener("mousemove",  evfn_dragging);
+        target.addEventListener("mouseup",    evfn_touchend);
+        target.addEventListener("mouseleave", evfn_touchend);
+        pagex = evt.pageX;
+        pagey = evt.pageY;
+      } else {
+        target.addEventListener("touchmove",  evfn_dragging);
+        target.addEventListener("touchend",   evfn_touchend);
+        target.addEventListener("touchleave", evfn_touchend);
+        pagex = evt.touches[0].pageX;
+        pagey = evt.touches[0].pageY;
+      }
+
+      pos_left = parseInt(container.style.left); //20px -> 20
+      pos_top = parseInt(container.style.top);
+      container.style.opacity = 0.5;
       draggingflg = true; //移動開始
-      pagex = e.pageX;
-      pagey = e.pageY;
-      pos_left = parseInt(this.hover.style.left); //20px -> 20
-      pos_top = parseInt(this.hover.style.top);
-      this.hover.style.opacity = 0.5;
     });
 
-    this.hover.addEventListener("drag", (e) => {
+    const evfn_dragging = ((evt) => {
       if (!draggingflg) { return; }
+      //マウスイベントとタッチイベントの差異を吸収
+      const e = (evt.type === "mousemove") ? evt : evt.touches[0];
       if (e.pageX == 0 && e.pageY == 0) { return; } //マウスを放したときに座標が0になるので、以下の計算をさせない
       pos_left += e.pageX - pagex; //移動量計算
       pos_top  += e.pageY - pagey;
       pagex = e.pageX;
       pagey = e.pageY;
-      this.hover.style.left = pos_left + "px"; //移動
-      this.hover.style.top = pos_top + "px";
+      container.style.left = pos_left + "px"; //移動
+      container.style.top = pos_top + "px";
     });
 
-    this.hover.addEventListener("dragend", () => {
+    const evfn_touchend = ((evt) => {
+      evt.preventDefault(); //touchendの後に発火するマウス関連イベント(mouseup,click)を抑止する
+      //イベント監視を止める (evfn_touchstartで登録しなかったイベントも止める)
+      target.removeEventListener("mousemove",  evfn_dragging);
+      target.removeEventListener("touchmove",  evfn_dragging);
+      target.removeEventListener("mouseup",    evfn_touchend);
+      target.removeEventListener("mouseleave", evfn_touchend);
+      target.removeEventListener("touchend",   evfn_touchend);
+      target.removeEventListener("touchleave", evfn_touchend);
+
       draggingflg = false; //移動終了
-      this.hover.style.opacity = 1;
+      container.style.opacity = 1;
     });
+
+    //スタートイベントを登録
+    target.addEventListener("mousedown",  evfn_touchstart);
+    target.addEventListener("touchstart", evfn_touchstart);
   }
 
   setButtonEvent() {
-    this.closebtn.addEventListener("click", () => { this.hide(); });
-    this.maxbtn.addEventListener("click", () => { this.max(); });
-    this.minbtn.addEventListener("click", () => { this.min(); });
+    if (this.closebtn) this.closebtn.addEventListener("click", () => { this.hide(); });
+    if (this.maxbtn) this.maxbtn.addEventListener("click", () => { this.max(); });
+    if (this.minbtn) this.minbtn.addEventListener("click", () => { this.min(); });
   }
 
   show() {
