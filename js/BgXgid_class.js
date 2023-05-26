@@ -78,11 +78,12 @@ class Xgid {
 
     this._dice = dicestr;
     // dice_odrはダイスを昇順にして保持する
-    const dice1 = dicestr.substr(0,1);
-    const dice2 = dicestr.substr(1,1);
-    this._dice_odr = (dice1 < dice2) ? dice1 + dice2 : dice2 + dice1;
-    this._dice_ary = [0, Number(dice1), Number(dice2)];
+    const dice1 = Number(dicestr.substr(0,1));
+    const dice2 = Number(dicestr.substr(1,1));
+    this._dice_odr = (dice1 < dice2) ? dice1 + "" + dice2 : dice2 + "" + dice1; //toString
+    this._dice_ary = [0, dice1, dice2];
     this.zorome = (dicestr != "00" && dice1 == dice2);
+    this._dicelist = this.zorome ? [dice1, dice1, dice1, dice1] : [Math.max(dice1, dice2), Math.min(dice1, dice2)];
   }
 
   //ポジション情報をパースし状態をローカル変数に格納
@@ -530,6 +531,82 @@ class Xgid {
       }
     }
     return true; //クローズアウトされていて、バーにコマがあればtrue
+  }
+
+  isBearoffAll() {
+    return (this.get_boff(1) == this.ckrnum || this.get_boff(-1) == this.ckrnum);
+  }
+
+  _getMyChecker() {
+    let checkerlist = [];
+    for (let p = 1; p <= 25; p++) {
+      if (this.existMyChequer(p)) { checkerlist.push(p); }
+    }
+    return checkerlist;
+  }
+
+  _switchPosition(xgidstr, position) {
+    const s = xgidstr.split(":");
+    s[0] = "XGID=" + position;
+    const newxgid = s.join(":");
+    return newxgid;
+  }
+
+  _makeMovedPosition(xgworkstr, dicelist) {
+    const remaindice = [...dicelist]; //sharrow copy
+    const dice = remaindice.shift();
+    if (dice === undefined) { return; }  //動かせるコマがなければ終了
+
+    const xgwork1 = new Xgid(xgworkstr);
+    for (const fr of xgwork1._getMyChecker()) { //動かせるコマのリスト
+      const to = Math.max(fr - dice, 0);
+      if (xgwork1.isMovable(fr, to)) {
+        const xgwork2 = new Xgid(xgworkstr);
+        const move = fr + "/" + to;
+        xgwork2.moveChequer2(move);
+        this.forcedlist.push([xgwork2.position, remaindice.length, dice]);
+        this._makeMovedPosition(xgwork2.xgidstr, remaindice); //再起呼び出しで動かした後のポジションリストを作る
+      }
+    }
+  }
+
+  isForcedMove() {
+    this.forcedlist = [];
+
+    //ダイスの目に従って動かした後のポジションのリストを作る
+    if (this.zorome) {
+      const dice = this.get_dice(1);
+      this._makeMovedPosition(this.xgidstr, [dice, dice, dice, dice]);
+    } else {
+      const dicemin = Math.min(this.get_dice(1), this.get_dice(2));
+      const dicemax = Math.max(this.get_dice(1), this.get_dice(2));
+      this._makeMovedPosition(this.xgidstr, [dicemax, dicemin]); //大きい目を先に使うか
+      this._makeMovedPosition(this.xgidstr, [dicemin, dicemax]); //後に使うかのポジションリストを作る
+    }
+
+    //重複排除
+    let min = 4; //remaindice.lengthの最大値
+    for (const elem of this.forcedlist) {
+      if (elem[1] < min) { min = elem[1]; }
+    }
+
+    const uniquedArray = [];
+    for (const elem of this.forcedlist) {
+      if (!uniquedArray.includes(elem[0]) && elem[1] == min) {
+        uniquedArray.push(elem[0]); //最大限動かした後のポジションリストを得る
+      }
+    }
+
+    //最終確認
+    this.forcedxgid = null;
+    if (uniquedArray.length == 1) {
+      this.forcedxgid = this._switchPosition(this.xgidstr, uniquedArray[0]);
+    }
+    return (!!this.forcedxgid); //falsy -> false
+  }
+
+  getForcedMovedXgid() {
+    return this.forcedxgid;
   }
 
 } //class Xgid
