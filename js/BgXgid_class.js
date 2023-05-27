@@ -221,6 +221,16 @@ class Xgid {
     return ((winnerscr + delta == this._matchsc - 1) && (loserscr != this._matchsc - 1)) ? true : false;
   }
 
+  getCrawfordPlayer() {
+    let player = 0;
+    if (this._crawford) {
+      const cfscore = this._matchsc - 1;
+      if      (this._sc_me == cfscore) { player = +1; }
+      else if (this._sc_yu == cfscore) { player = -1; }
+    }
+    return player;
+  }
+
   _incdec(chr, delta, turn) {
     const stdchar = (turn == 1) ? "A" : "a";
     const charcd = stdchar.charCodeAt(0);
