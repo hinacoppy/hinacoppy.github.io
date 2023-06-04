@@ -567,13 +567,15 @@ class Xgid {
     const dice = remaindice.shift();
     if (dice === undefined) { return; }  //動かせるコマがなければ終了
 
-    const xgwork1 = new Xgid(xgworkstr);
+    const xgwork1 = new Xgid(xgworkstr, this.gametype);
     for (const fr of xgwork1._getMyChecker()) { //動かせるコマのリスト
       const to = Math.max(fr - dice, 0);
       if (xgwork1.isMovable(fr, to)) {
-        const xgwork2 = new Xgid(xgworkstr);
-        const move = fr + "/" + to;
-        xgwork2.moveChequer2(move);
+        const xgwork2 = new Xgid(xgworkstr, this.gametype);
+        if (xgwork2.isHitted(to)) {
+          xgwork2.moveChequer2(to + "/" + this.param1);
+        }
+        xgwork2.moveChequer2(fr + "/" + to);
         this.forcedlist.push([xgwork2.position, remaindice.length, dice]);
         this._makeMovedPosition(xgwork2.xgidstr, remaindice); //再起呼び出しで動かした後のポジションリストを作る
       }
