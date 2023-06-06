@@ -51,8 +51,8 @@ class FloatWindow {
     this.hover.style.width = option.width;
     this.hover.style.height = option.height;
 
-    const pos_left = option.left ?  parseInt(option.left) : (window.innerWidth / 2) - (this.hover.clientWidth / 2); //画面中央
-    const pos_top = option.top ?  parseInt(option.top) : (window.innerHeight / 2) - (this.hover.clientHeight / 2);
+    const pos_left = option.left ? parseInt(option.left) : (window.innerWidth / 2) - (this.hover.clientWidth / 2); //画面中央
+    const pos_top = option.top ? parseInt(option.top) : (window.innerHeight / 2) - (this.hover.clientHeight / 2);
     this.hover.style.left = pos_left + "px";
     this.hover.style.top = pos_top + "px";
 
@@ -62,19 +62,18 @@ class FloatWindow {
   }
 
   setDragEvent(container) {
-    let mouseX = 0; //どこをつかんで移動を開始したかを保存
-    let mouseY = 0;
+    let mouseX, mouseY; //どこをつかんで移動を開始したかを保持
 
     container.addEventListener("dragstart", (evt) => {
-      mouseY = container.offsetTop - evt.pageY;
       mouseX = container.offsetLeft - evt.pageX;
+      mouseY = container.offsetTop  - evt.pageY;
       container.style.opacity = 0.5;
     });
 
     container.addEventListener("drag", (evt) => {
       if (evt.x === 0 && evt.y === 0) { return; }
-      container.style.top = (evt.pageY + mouseY) + "px";
       container.style.left = (evt.pageX + mouseX) + "px";
+      container.style.top  = (evt.pageY + mouseY) + "px";
     });
 
     container.addEventListener("dragend", (evt) => {
