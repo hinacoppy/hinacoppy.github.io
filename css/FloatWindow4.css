@@ -1,0 +1,32 @@
+/* FloatWindow4.css */
+/* 参考：http://webnonotes.com/javascript-2/fake-window/ */
+
+.modalContainer{
+  background-color:#ffe;
+  position:absolute;
+  z-index:99;
+}
+.modalTitle button{ /* ボタン */
+  all:initial; /* ボタンCSS初期化 */
+  background-color:#eee;
+  padding:0 5px;
+  margin-right:5px;
+  cursor:pointer;
+}
+.modalTitle{
+  width:100%;
+  height:35px;
+  line-height:35px; /* 上下中央揃え */
+  font-weight:bold;
+  text-indent:1em;
+  background:#777;
+  color:white;
+  text-align:right;
+}
+.modalTitleText{
+  float:left; /* 閉じるボタンを右寄せ */
+}
+.modalBody{ /* データ表示 */
+  margin:0;
+  padding:20px;
+}
