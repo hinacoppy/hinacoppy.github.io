@@ -10,6 +10,7 @@
 // 2021.8.2 hinacoppy
 // 2023.1.21 脱jQuery
 // 2023.6.6  draggableに移行
+// 2023.6.9  touchイベントにも対応
 "use strict";
 
 class FloatWindow {
@@ -19,6 +20,7 @@ class FloatWindow {
     this.setFloatWindowStyle(option);
     this.setButtonEvent();
     this.setDragEvent(this.hover);
+    this.setTouchEvent(this.hover, this.head);
   }
 
   setOption(userOption) {
@@ -78,6 +80,32 @@ class FloatWindow {
 
     container.addEventListener("dragend", (evt) => {
       evt.preventDefault(); //以降のイベントを無視する
+      container.style.opacity = 1;
+    });
+  }
+
+  setTouchEvent(container, dragtarget) {
+    let touchX, touchY;
+
+    dragtarget.addEventListener("touchstart", (evt) => {
+      evt.preventDefault(); //touchstartの後に発火するマウス関連イベント(mousedown)を抑止する
+      if (evt.target === this.closebtn || evt.target === this.maxbtn || evt.target === this.minbtn) {
+        evt.target.click(); //preventDefault()でclickイベントが抑止されているため、改めてclickイベントを発火させる
+        return;
+      }
+      touchX = container.offsetLeft - evt.touches[0].pageX;
+      touchY = container.offsetTop  - evt.touches[0].pageY;
+      container.style.opacity = 0.5;
+    });
+
+    dragtarget.addEventListener("touchmove", (evt) => {
+      if (evt.x === 0 && evt.y === 0) { return; }
+      container.style.left = (evt.touches[0].pageX + touchX) + "px";
+      container.style.top  = (evt.touches[0].pageY + touchY) + "px";
+    });
+
+    dragtarget.addEventListener("touchend", (evt) => {
+      evt.preventDefault();
       container.style.opacity = 1;
     });
   }
