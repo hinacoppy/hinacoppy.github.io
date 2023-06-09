@@ -3,6 +3,7 @@
 
 .modalContainer{
   background-color:#ffe;
+  border:solid #00f 2px;
   position:absolute;
   z-index:99;
 }
