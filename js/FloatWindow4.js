@@ -11,6 +11,7 @@
 // 2023.1.21 脱jQuery
 // 2023.6.6  draggableに移行
 // 2023.6.9  touchイベントにも対応
+// 2023.8.26 ボタンクリック時に stopPropagation() を実行
 "use strict";
 
 class FloatWindow {
@@ -44,9 +45,9 @@ class FloatWindow {
     this.hover    = document.querySelector(option.hoverid);
     this.head     = document.querySelector(option.headid);
     this.body     = document.querySelector(option.bodyid);
-    this.closebtn = document.querySelector(option.closebtn);
     this.maxbtn   = document.querySelector(option.maxbtn);
     this.minbtn   = document.querySelector(option.minbtn);
+    this.closebtn = document.querySelector(option.closebtn);
   }
 
   setFloatWindowStyle(option) {
@@ -111,9 +112,9 @@ class FloatWindow {
   }
 
   setButtonEvent() {
-    if (this.closebtn) this.closebtn.addEventListener("click", () => { this.hide(); });
-    if (this.maxbtn) this.maxbtn.addEventListener("click", () => { this.max(); });
-    if (this.minbtn) this.minbtn.addEventListener("click", () => { this.min(); });
+    if (this.closebtn) this.closebtn.addEventListener("click", (e) => { e.stopPropagation(); this.hide(); });
+    if (this.maxbtn)   this.maxbtn.addEventListener("click",   (e) => { e.stopPropagation(); this.max(); });
+    if (this.minbtn)   this.minbtn.addEventListener("click",   (e) => { e.stopPropagation(); this.min(); });
   }
 
   show() {
