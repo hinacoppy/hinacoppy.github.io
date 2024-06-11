@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="Hinacoppy Home">
-<meta name="author" content="(C)hinacoppy 2018-2023">
+<meta name="author" content="(C)hinacoppy 2018-2024">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon/favicon.ico">
 <link rel="apple-touch-icon" href="icon/apple-touch-icon.png">
@@ -95,7 +95,6 @@ a{
 <div class="itemdesc">
 バックギャモン用のスコアボードアプリです。<br>
 hkitagoさんのスコアボードアプリの動きが素晴らしかったので、二番煎じで同じような動きのスコアボードアプリを作りました。<br>
-全画面表示アプリにする手順で全画面アプリにしてから使ってください。<br>
 (<a href="https://hkitago.github.io/bgscoreboardapp/">hkitagoさんのアプリはこちら</a>)
 </div>
 </td>
@@ -166,8 +165,7 @@ MAT形式のバックギャモン棋譜ファイルから、ゲーム局面を�
 <div class="itemtitle">◆<a href="/OtokogiGammon/">漢気ギャモン</a></div>
 <div class="itemdesc">
 ちば例会で創案された漢気ギャモンをアプリにしました。<br>
-マス数とダイス目を7にした「漢気ギャモン7」、マス数とダイス目が5の「漢気ギャモン5」も遊べるようにしました。(2022/3)</br>
-全画面表示アプリにする手順で全画面アプリにしてから使ってください。
+マス数とダイス目を7にした「漢気ギャモン7」、マス数とダイス目が5の「漢気ギャモン5」も遊べるようにしました。(2022/3)
 </div>
 </td>
 </tr>
@@ -202,8 +200,7 @@ eXtreme Gammon2 にも棋譜を入力する機能はありますが、棋譜入�
 </div>
 <div class="itemdesc">
 趣味でバックギャモンボードも作製しています。<br>
-2022/10の王位戦において、拙作のバックギャモンボードの展示・販売を行いました。<br>
-作製したボードに込めたコンセプトや思いを少しでも分かっていただきたいと思い、ボード作製時のエピソードなどを記したレポートをまとめました。<br>
+作製したボードに込めたコンセプトや思いを少しでも分かっていただきたいと思い、ボード作製時のエピソードなどを記したレポートを、2022/10の王位戦のときにまとめました。<br>
 そのレポートを当ホームページに再掲いたします。ご笑読いただければ幸いです。
 </div>
 </td>
@@ -212,7 +209,6 @@ eXtreme Gammon2 にも棋譜を入力する機能はありますが、棋譜入�
 <hr>
 <h3><a name="app">◆上記のアプリを全画面表示のアプリとして使う方法</a></h3>
 <p>「ホーム画面に追加」の機能を使うことにより、普通のアプリと同じように全画面表示のアプリとして使うことができます。</p>
-<p>「ホーム画面に追加」は各端末OSの標準ブラウザで実行する必要があります。ご注意ください。</p>
 
 <h4>●Android端末の場合</h4>
 <ul class="itemnone">
@@ -229,13 +225,15 @@ eXtreme Gammon2 にも棋譜を入力する機能はありますが、棋譜入�
 
 <h4>●Apple端末(iPhone, iPadなど)の場合</h4>
 <ul class="itemnone">
-<li>(1)Safariで上記リンク先のアプリを開く
+<li>(1)Safari, Chrome(*1)で上記リンク先のアプリを開く
 <li>(2)送信アイコン(□から↑が突き出ているアイコン)をタップ
 <li>(3)「ホーム画面に追加」をタップ
 <li>(4)「追加」をタップ
 <li>(5)追加されているはずなので、画面内を確認
 <li>(6)次回からはこのアイコンをタップすればアプリが開く
 </ul>
+
+<p>(*1) Apple端末でChromeから「ホーム画面に追加」機能が使えるのは iOS 16.4 以降のバージョンです。</p>
 
 <p>参考：<a href="https://www.softbank.jp/support/faq/view/12288">［iPhone／iPad］ホーム画面にショートカットアイコンを作成する方法を教えてください</a></p>
 
@@ -272,7 +270,7 @@ eXtreme Gammon2 にも棋譜を入力する機能はありますが、棋譜入�
 
 <hr>
 
-<footer class="footer">(C) <span onclick="linkto();">Hina</span>coppy. 2018 -- 2023</footer>
+<footer class="footer">(C) <span onclick="linkto();">Hina</span>coppy. 2018 -- 2024</footer>
 
 <script>
 function linkto() { location.href = "/ProblemPager/"; }
@@ -292,7 +290,6 @@ function load(id, url, param = "body") {
 
 //フェアリーギャモンのメニューを挿し込む
 load("includeGammonApp", "/GammonApp/index.html", "table");
-//$("#includeGammonApp").load("/GammonApp/index.html table");
 </script>
 </body>
 </html>
