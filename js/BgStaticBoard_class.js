@@ -11,7 +11,7 @@ class BgBoard {
     this.prepareSvgDice();
     this.mainBoard.addClass(boardstyle);
     this.setDomNameAndStyle();
-    if (this.leftBoffFlag) { this.flipHoriz(); } //向きを変えるのはDOMの設定後
+    if (!this.leftBoffFlag) { this.flipHoriz(); } //向きを変えるのはDOMの設定後
   } //end of constructor()
 
   prepareSvgDice() {
@@ -308,8 +308,8 @@ class BgBoard {
     this.boffHeight = this.pieceWidth / 4 ;  //ベアオフの駒は立てたように表示
     this.offtrayMargin = offtrayMarginNum;
 
-    this.pointX = [7, 13, 12, 11, 10,  9,  8,  6,  5,  4,  3,  2,  1,
-                       1,  2,  3,  4,  5,  6,  8,  9, 10, 11, 12, 13,  7, 14];
+    this.pointX = [7,  1,  2,  3,  4,  5,  6,  8,  9, 10, 11, 12, 13,
+                      13, 12, 11, 10,  9,  8,  6,  5,  4,  3,  2,  1,  7, 0];
     for (let i = 0; i < this.pointX.length; i++) {
       this.pointX[i] *= this.pointWidth;
     }
@@ -356,7 +356,7 @@ class BgBoard {
 
   redraw() {
     this.bgBoardConfig();
-    if (this.leftBoffFlag) { this.flipHoriz(); }
+    if (!this.leftBoffFlag) { this.flipHoriz(); }
 
     //bar
     $("#bar").css(this.getPosObj(this.pointX[0], 0));
