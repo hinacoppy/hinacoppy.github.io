@@ -8,7 +8,8 @@ class Chequer {
     const _idsep = ["z", "w", "b"];
     this._domid = "p" + _idsep[player] + idx;
     const _turnclass = ["", "turncol1", "turncol2"];
-    this._domhtml = '<div id="' + this._domid + '" class="chequer ' + _turnclass[player] + '"></div>';
+    const domdiv = '<div id="' + this._domid + '" class="chequer ' + _turnclass[player] + '"></div>';
+    this._domhtml = '<div class="border">' + domdiv + '</div>';
     this._dom = null;
     this._point = 0;
     this._stack = 0;
