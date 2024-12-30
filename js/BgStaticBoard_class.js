@@ -323,10 +323,10 @@ class BgBoard {
 
     this.diceSize = this.pointWidth;
     this.diceY = this.mainBoardHeight / 2 - this.diceSize / 2;
-    this.dice10X = this.pointX[3];
-    this.dice11X = this.pointX[4];
-    this.dice20X = this.pointX[9];
-    this.dice21X = this.pointX[10];
+    this.dice10X = this.pointX[9];
+    this.dice11X = this.pointX[10];
+    this.dice20X = this.pointX[3];
+    this.dice21X = this.pointX[4];
 
     this.pointStackThreshold = 5;
     this.barStackThreshold = 3;
