@@ -315,7 +315,7 @@ class BgBoard {
 
   bgBoardConfig() {
     //CSSで定義された数値情報を取得
-    const style = getComputedStyle(document.querySelector('body'));
+    const style = getComputedStyle(document.querySelector('.container'));
     const boardHeightNum   = parseFloat(style.getPropertyValue('--boardHeightNum'));
     const boardWidthNum    = parseFloat(style.getPropertyValue('--boardWidthNum'));
     const pointWidthNum    = parseFloat(style.getPropertyValue('--pointWidthNum'));
