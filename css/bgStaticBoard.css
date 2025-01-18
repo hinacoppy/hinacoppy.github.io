@@ -1,21 +1,33 @@
 /* bgStaticBoard.css ----------------------------------------- */
-/* Designed by hinacoppy 2019 - 2023 ------------------------- */
+/* Designed by hinacoppy 2019 - 2025 ------------------------- */
 
 /* bgboard decoration ---------------------------------------- */
 :root{
-/* App depend constants must define in application css
-  --boardHeightNum: 70;
-  --boardWidthNum: 45;
-  --pointWidthNum: 3;
-  --cubeSizeNum: 2.7;
-  --frameSizeNum: 1.3;
-  --offtrayMarginNum: 5;
-  --offtrayHeightNum: 49; /* bgBoardApp=49, other=boardHeightNum
-  --cubeFontSizeNum: 1;
-  --labelFontSizeNum: 0.7;
-  --stackFontSizeNum: 1.0;
----------------------------------------------------- */
+  --boardWidthNum:90; /* < 100 and 15*n */
+  --boardHeightNum:68; /* = boardWidthNum * 3/4 */
+  --pointWidthNum:6; /* = boardWidthNum / 15 */
+  --cubeSizeNum:5.4; /* = pointWidthum * 0.9 */
+  --frameSizeNum:1.3;
+  --offtrayMarginNum:5;
+  --offtrayHeightNum:68; /* = boardHeightNum */
+  --cubeFontSizeNum:4;
+  --labelFontSizeNum:1.5;
+  --stackFontSizeNum:3;
 
+  --board-width:calc(var(--boardWidthNum) * 1vmin);
+  --board-height-max:calc(var(--boardHeightNum) * 1vmin);
+  --board-height:calc(var(--boardHeightNum) * 1vmin);
+  --point-height:calc(var(--boardHeightNum) * 1vmin / 2.3);
+  --point-width:calc(var(--pointWidthNum) * 1vmin);
+  --board-frame-size:calc(var(--frameSizeNum) * 1vmin);
+  --offtray-margin:calc(var(--offtrayMarginNum) * 1px);
+  --offtray-height:calc(var(--offtrayHeightNum) * 1vmin);
+  --cube-size:calc(var(--cubeSizeNum) * 1vmin);
+  --cube-font-size:calc(var(--cubeFontSizeNum) * 1vmin);
+  --label-font-size:calc(var(--labelFontSizeNum) * 1vmin);
+  --stack-font-size:calc(var(--stackFontSizeNum) * 1vmin);
+}
+:rootZZZ{
   --point-width:calc(var(--pointWidthNum) * 1vw);
   --board-height-max:calc(var(--boardHeightNum) * 1vw);
   --board-height:calc(var(--boardHeightNum) * 1vw);
@@ -105,7 +117,7 @@
   position:absolute;
   width:var(--point-width);
   height:var(--point-width);
-  clip-path:circle(45% at 50% 50%); /* 影の分、小さくする */
+  clip-path:circle(48% at 50% 50%); /* 影の分、小さくする */
 }
 .border{ /* drop-shadowの影は一つ上のエレメントに掛ける */
   filter:drop-shadow( 0.5px  0.5px gray)
