@@ -38,6 +38,7 @@ class Xgid {
     this._gmarea = [0, 0]; //  G負けエリアの駒の数
     this._dbloffer = false;
 
+    this._check_xgid_syntax(this._xgid); //XGID構文チェック
     this._parse_xgid(this._xgid); // XGIDを解析
     this._parse_position(this._position); // ボード状態を解析
     this._calc_score(); // ゲームスコアを計算
@@ -564,14 +565,17 @@ class Xgid {
 
   _makeMovedPosition(xgworkstr, dicelist) {
     const remaindice = [...dicelist]; //sharrow copy
+    if (remaindice.length == 0) { return; } //使えるダイスがなければ終了
     const dice = remaindice.shift();
     if (dice === undefined) { return; }  //動かせるコマがなければ終了
 
     const xgwork1 = new Xgid(xgworkstr, this.gametype);
     for (const fr of xgwork1._getMyChecker()) { //動かせるコマのリスト
       const to = Math.max(fr - dice, 0);
-      if (xgwork1.isMovable(fr, to)) {
+      if (fr != to && xgwork1.isMovable(fr, to)) {
         const xgwork2 = new Xgid(xgworkstr, this.gametype);
+        const remaindicestr = (remaindice.join("") + "00").substring(0, 2); //使えるダイスでリストを再作成
+        xgwork2.dice = remaindicestr; //使ったダイスは次には使えない
         if (xgwork2.isHitted(to)) {
           xgwork2.moveChequer2(to + "/" + this.param1);
         }
@@ -619,6 +623,97 @@ class Xgid {
 
   getForcedMovedXgid() {
     return this.forcedxgid;
+  }
+
+  _check_xgid_syntax(xgid) {
+    //local functions
+    const isIncludes = (x, array) => { return array.includes(Number(x)); }
+    const isNonNegativeInteger = (x) => {
+      const numx = Number(x);
+      return Number.isInteger(numx) && numx >= 0; //0以上の整数
+    }
+    const isAllowedChars = (x) => {
+      const charmax1 = String.fromCharCode(64 + this.ckrnum); //64+15 = O, 65 = A
+      const charmax2 = String.fromCharCode(96 + this.ckrnum); //96+15 = o
+      const allowedChars = "^[A-" + charmax1 + "a-" + charmax2 + "\-]+$"; //ポジションに使える文字の正規表現 /^[A-Oa-o\-]+$/
+      const regex = new RegExp(allowedChars);
+      return regex.test(x);
+    }
+    const isValidDice = (x) => {
+      let allowedDiceList = [];
+      for (let d1 = 0; d1 <= this.dicemx; d1++) {
+        for (let d2 = 0; d2 <= this.dicemx; d2++) {
+          const dicestr = String(d1) + String(d2); //to String
+          allowedDiceList.push(dicestr);
+        }
+      }
+      allowedDiceList.push("D"); //double offer (known bug: beaver, raccoon and etc are not implemented)
+      return allowedDiceList.includes(x);
+    }
+
+    //syntax check
+    let syntax_error = false;
+    let alert_message = xgid + '\n\n';
+    const xgidstr2 = xgid.substr("XGID=".length);
+    const s = xgidstr2.split(":"); //XGIDをパース
+
+    if (s.length != 10) {
+      syntax_error = true;
+      alert_message += xgid + ' syntax is not valid\n';
+    }
+    const s0length = s[0].length;
+    if (s0length != this.param2) {
+      syntax_error = true;
+      alert_message += `"${s[0]}".length(${s0length}) is not equal ${this.param2}\n`;
+      //alert_message += '"' + s[0] + '".length(' + s0length + ') is not equal ' + this.param2 + '\n';
+    }
+    if (!isAllowedChars(s[0])) {
+      syntax_error = true;
+      alert_message += `"${s[0]}" includes invalid chars\n`;
+      //alert_message += '"' + s[0] + '" includes invalid chars\n';
+    }
+    if (!isNonNegativeInteger(s[1])) {
+      syntax_error = true;
+      alert_message += 'cube "' + s[1] + '" is not valid (only Non-negative integer)\n';
+    }
+    if (!isIncludes(s[2], [0, 1, -1])) {
+      syntax_error = true;
+      alert_message += 'cubepos "' + s[2] + '" is not valid (only 0, 1, -1)\n';
+    }
+    if (!isIncludes(s[3], [0, 1, -1])) {
+      syntax_error = true;
+      alert_message += 'turn "' + s[3] + '" is not valid (only 0, 1, -1)\n';
+    }
+    if (!isValidDice(s[4])) {
+      syntax_error = true;
+      alert_message += 'dice "' + s[4] + '" is not valid\n';
+    }
+    if (!isNonNegativeInteger(s[5])) {
+      syntax_error = true;
+      alert_message += 'sc_me "' + s[5] + '" is not valid (only Non-negative integer)\n';
+    }
+    if (!isNonNegativeInteger(s[6])) {
+      syntax_error = true;
+      alert_message += 'sc_yu "' + s[6] + '" is not valid (only Non-negative integer)\n';
+    }
+    if (!isIncludes(s[7], [0, 1, 2, 3])) {
+      syntax_error = true;
+      alert_message += 'jacoby "' + s[7] + '" is not valid (only 0, 1, 2, 3)\n';
+    }
+    if (!isNonNegativeInteger(s[8])) {
+      syntax_error = true;
+      alert_message += 'matchsc "' + s[8] + '" is not valid (only Non-negative integer)\n';
+    }
+    if (!isNonNegativeInteger(s[9])) {
+      syntax_error = true;
+      alert_message += 'maxcube "' + s[9] + '" is not valid (only Non-negative integer)\n';
+    }
+
+    //message if syntax error
+    if (syntax_error) {
+      alert(alert_message);
+    }
+    //アラートダイアログを表示するだけで、先に進むことはできる
   }
 
 } //class Xgid
