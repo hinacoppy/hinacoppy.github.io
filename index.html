@@ -1,318 +1,375 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="description" content="Hinacoppy Home">
-<meta name="author" content="(C)hinacoppy 2018-2026">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon/favicon.ico">
-<link rel="apple-touch-icon" href="icon/apple-touch-icon.png">
-<title>index.html</title>
-<style>
-body{
-  background:#efe;
-}
-table{
-  margin-left:20px;
-  border:solid 3px black;
-  border-collapse:collapse;
-}
-table td{
-  border:solid 1px black;
-  vertical-align:top;
-  padding:5px;
-}
-p{
-  padding-left:20px;
-}
-a{
-  text-decoration:none;
-}
-.title{
-  padding:10px 0;
-}
-.title img{
-  vertical-align:middle;
-  width:48px;
-}
-.title span{
-  vertical-align:middle;
-  font-weight:bold;
-  font-size:x-large;
-}
-.itemtitle{
-  padding-left:0;
-  font-weight:bold;
-  font-size:medium;
-}
-.itemdesc{
-  padding-left:20px;
-}
-.itemnone{
-  list-style-type:none;
-}
-.footer{
-  text-align:right;
-}
-.innertable{
-  margin:0;
-  padding:0;
-  border:none;
-  border-collapse:collapse;
-}
-</style>
-</head>
-<body>
-<header class="title"><a href="/"><img src="/icon/android-chrome-96x96.png"></a>
-<span>Backgammon Gadget made by hinacoppy</span></header>
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Hinacoppy Home" />
+  <meta name="author" content="(C)hinacoppy 2018-2026" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon/favicon.ico" />
+  <link rel="apple-touch-icon" href="icon/apple-touch-icon.png" />
+  <title>index.html</title>
+  <style>
+   body{
+    background:#efe;
+   }
+   table{
+    margin-left:20px;
+    border:solid 3px black;
+    border-collapse:collapse;
+   }
+   table td{
+    border:solid 1px black;
+    vertical-align:top;
+    padding:5px;
+   }
+   p{
+    padding-left:20px;
+   }
+   a{
+    text-decoration:none;
+   }
+   .title{
+    padding:10px 0;
+   }
+   .title img{
+    vertical-align:middle;
+    width:48px;
+   }
+   .title span{
+    vertical-align:middle;
+    font-weight:bold;
+    font-size:x-large;
+   }
+   .itemtitle{
+    padding-left:0;
+    font-weight:bold;
+    font-size:medium;
+   }
+   .itemdesc{
+    padding-left:20px;
+   }
+   .itemnone{
+    list-style-type:none;
+   }
+   .footer{
+    text-align:right;
+   }
+   .innertable{
+    margin:0;
+    padding:0;
+    border:none;
+    border-collapse:collapse;
+   }
+  </style>
+ </head>
 
-<table>
-<tr>
-<td><a href="/bgclock/digital.html"><img src="/bgclock/icon/digital/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/bgclock/digital.html">bgclock</a></div>
-<div class="itemdesc">
-バックギャモンに特化したクロックとスコアボードのアプリです。→<a href="/bgclock/help.html">トリセツ</a><br>
-初期設定時間を、左右それぞれで設定できる機能を追加しました。(2022/12)<br>
-スマホのジャイロセンサーの機能を使って、スマホを傾けることでクロックの操作ができる機能を実装しました。(2023/1)<br>
-(<a href="#app">全画面アプリ設定方法</a>)&emsp;(<a href="#lock">画面ロック時間変更方法</a>)
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/bgclock/analog.html"><img src="/bgclock/icon/analog/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/bgclock/analog.html">bgclock-analog</a></div>
-<div class="itemdesc">
-アナログ時計形式のバックギャモンクロックとスコアボードのアプリです。→<a href="/bgclock/help.html">トリセツ</a>
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/bgscoreapp/"><img src="/bgscoreapp/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/bgscoreapp/">BG Score Board App</a></div>
-<div class="itemdesc">
-バックギャモン用のスコアボードアプリです。<br>
-hkitagoさんのスコアボードアプリの動きが素晴らしかったので、二番煎じで同じような動きのスコアボードアプリを作りました。<br>
-(<a href="https://hkitago.github.io/bgscoreboardapp/">hkitagoさんのアプリはこちら</a>)
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/bgScoreAppSvg/"><img src="/bgScoreAppSvg/icon/7seg/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/bgScoreAppSvg/7segment.html">7Segment</a> &emsp;
-                         <a href="/bgScoreAppSvg/rectangle.html">Rectangle</a> &emsp;
-                         <a href="/bgScoreAppSvg/dotmatrix.html">DotMatrix</a> &emsp;
-                         <a href="/bgScoreAppSvg/flipfont.html">FlipFont</a> &emsp;
-                         <a href="/bgScoreAppSvg/odometer.html">Odometer</a> &emsp;
-                         <a href="/bgScoreAppSvg/handwrite.html">Handwrite</a></div> 
-<div class="itemdesc">
-バックギャモン用のスコアボードアプリ(第二弾)です。<br>
-スコア数字がぬるっとアニメーションするスコアボードアプリです。(2026/1)<br>
-アニメーションパターンを６種類に増やしました。(2026/9)<br>
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/GammonApp/normal/"><img src="/GammonApp/normal/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/GammonApp/normal/">バックギャモンアプリ (Normal Backgammon)</a></div>
-<div class="itemdesc">
-バックギャモンをタブレット上で遊べるようにしたアプリです。→<a href="/GammonApp/normal/help.html">トリセツ</a><br>
-人vs人の対戦機能しかありません。(vsコンピュータ、vs世界中の人、と対戦できるアプリではありません。)<br>
-クロック機能、棋譜ダウンロード機能を追加しました。(2021/7)<br>
-下記フェアリーギャモンのコードで書き換えたものに差し替えました。(2022/3)
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/GammonAppWithAI/"><img src="/GammonAppWithAI/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/GammonAppWithAI/">バックギャモンアプリ (vs AI)</a></div>
-<div class="itemdesc">
-対コンピュータでバックギャモンをタブレット上で遊べるようにしたアプリです。→<a href="/GammonAppWithAI/help.html">トリセツ</a><br>
-ブラウザ内に思考エンジンを置き、対コンピュータでバックギャモンを遊べるようにしました。(2026/10)<br>
-コンピュータ側の思考エンジンは、wildbg, gammonNet の２つから選べるようになっています。<br>
-棋譜ダウンロード機能もありますので対戦結果を解析ソフトで解析することも可能です。
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/GammonApp/"><img src="/GammonApp/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/GammonApp/">フェアリーギャモン (変則ルールギャモン)</a></div>
-<div class="itemdesc">
-バックギャモンのルールに手を加えた、変則的なルールのギャモンをタブレットやPC上で遊べるようにしました。
-<br><br>
-ショートギャモン、ロングギャモンは2020年6月号のJBLニュースに掲載された草場先生の記事に触発されて開発しました。<br>
-コンピュータプログラムを使えば、正確な5面ダイスや7面ダイスも簡単に作れるので、このような変則的なゲームも作れますね。<br>
-そこから派生して、マイクロギャモン、ハイパーギャモン、ナックギャモン、双八に展開しています。<br>
-おさんぽギャモンはハーフギャモンですので、ここの仲間に入れています。
-</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td id="includeGammonApp"></td>
-</tr>
-<tr>
-<td><a href="/bgPositionEditor/"><img src="/bgPositionEditor/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/bgPositionEditor/">bgPositionEditor</a></div>
-<div class="itemdesc">
-バックギャモンのポジションを編集するツールです。ポジション画像とXGID文字列を出力できます。<br>
-2ボタンあるマウスで操作できるモードと、タップで操作できるモードを切り替えて使うことができます。
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/ChibawanRoulette/"><img src="/ChibawanRoulette/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/ChibawanRoulette/">ちばわんポイントルーレット</a></div>
-<div class="itemdesc">
-ちば例会の年間ちばわんポイントのポイント抽選券を抽選するアプリです。<br>
-非常にニッチなアプリです。使う人は多分世界でひとりだけ(笑)
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/OtokogiGammonSvg/"><img src="/OtokogiGammonSvg/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/OtokogiGammonSvg/">漢気ギャモン (SVG ver)</a></div>
-<div class="itemdesc">
-ちば例会で創案された漢気ギャモンをアプリにしました。<br>
-マス数とダイス目を7にした「漢気ギャモン7」、マス数とダイス目が5の「漢気ギャモン5」も遊べるようにしました。(2022/3)<br>
-１人のプレーヤを出目操作するオプション機能を追加しましたが、面白くなかったので止めました。(2025/11)<br>
-画面描画をSVGにした「漢気ギャモン」に差し替えました。(2026/9)
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/bgKifuViewerEditor/"><img src="/bgKifuViewerEditor/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/bgKifuViewerEditor/">BG Kifu Viewer/Editor</a></div>
-<div class="itemdesc">
-下記の3機能を統合したアプリです。以前はそれぞれの機能を持つ別々のアプリとして公開していましたが、一つに統合しました。→<a href="/bgKifuViewerEditor/help.html">トリセツ</a><br>
-&emsp;・バックギャモン棋譜ファイルからゲーム局面を再生する<br>
-&emsp;・動画を見ながらバックギャモンの棋譜を入力する<br>
-&emsp;・kifu.me が出力した棋譜ファイルを編集する<br>
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/PipCountTrainer/"><img src="/PipCountTrainer/icon/android-chrome-96x96.png"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/PipCountTrainer/">Pip Count Trainer</a></div>
-<div class="itemdesc">
-バックギャモンのピップカウントを練習するためのアプリです。<br>
-ランダムで出力されるポジションのピップカウントを入力し、正しいかどうかを判定してくれます。<br>
-ピップカウントができない自分のために作りましたが、皆様にも使ってもらえるとうれしいです。
-</div>
-</td>
-</tr>
-<tr>
-<td><a href="/MyBoardReport/ReportForMyHandmadeBGBoard.pdf"><img src="/MyBoardReport/board-icon-96x72.jpg"></a></td>
-<td>
-<div class="itemtitle">◆<a href="/MyBoardReport/ReportForMyHandmadeBGBoard.pdf">自作バックギャモンボードのご紹介</a>
-&emsp;&emsp;
-<a href="/MyBoardReport/Appendix1-BoardDesign.pdf">付録1</a>&emsp;
-<a href="/MyBoardReport/Appendix2-CalcurateCircle.pdf">付録2</a>&emsp;
-<a href="/MyBoardReport/Appendix3-MyBoardReport-201210.pdf">付録3</a>
-</div>
-<div class="itemdesc">
-趣味でバックギャモンボードも作製しています。<br>
-作製したボードに込めたコンセプトや思いを少しでも分かっていただきたいと思い、ボード作製時のエピソードなどを記したレポートを、2022/10の王位戦のときにまとめました。<br>
-そのレポートを当ホームページに再掲いたします。ご笑読いただければ幸いです。
-</div>
-</td>
-</tr>
-</table>
-<hr>
-<h3><a name="app">◆上記のアプリを全画面表示のアプリとして使う方法</a></h3>
-<p>「ホーム画面に追加」の機能を使うことにより、普通のアプリと同じように全画面表示のアプリとして使うことができます。</p>
+ <body>
+  <header class="title">
+   <a href="/"><img src="/icon/android-chrome-96x96.png" /></a> <span>Backgammon Gadget made by hinacoppy</span>
+  </header>
 
-<h4>●Android端末の場合</h4>
-<ul class="itemnone">
-<li>(1)Chromeで上記リンク先のアプリを開く
-<li>(2)設定アイコン(右上の３点のアイコン)をタップ
-<li>(3)「ホーム画面に追加」をタップ
-<li>(4)ホーム画面に追加してもよいかどうかの確認画面で「追加」をタップ
-<li>(5)ホーム画面に追加しましたのメッセージが表示されるので、画面内を確認
-<li>(6)次回からはこのアイコンをタップすればアプリが開く
-</ul>
+  <table>
+   <tr>
+    <td>
+     <a href="/bgclock/digital.html"><img src="/bgclock/icon/digital/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/bgclock/digital.html">bgclock</a></div>
+     <div class="itemdesc">
+      バックギャモンに特化したクロックとスコアボードのアプリです。
+        →<a href="/bgclock/help.html">トリセツ</a><br />
+      初期設定時間を、左右それぞれで設定できる機能を追加しました。(2022/12)<br />
+      スマホのジャイロセンサーの機能を使って、スマホを傾けることでクロックの操作ができる機能を実装しました。(2023/1)<br />
+      (<a href="#app">全画面アプリ設定方法</a>)&emsp;(<a href="#lock">画面ロック時間変更方法</a>)
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/bgclock/analog.html"><img src="/bgclock/icon/analog/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/bgclock/analog.html">bgclock-analog</a></div>
+     <div class="itemdesc">
+      アナログ時計形式のバックギャモンクロックとスコアボードのアプリです。
+        →<a href="/bgclock/help.html">トリセツ</a>
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/bgscoreapp/"><img src="/bgscoreapp/icon/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/bgscoreapp/">BG Score Board App</a></div>
+     <div class="itemdesc">
+      バックギャモン用のスコアボードアプリです。<br />
+      hkitagoさんのスコアボードアプリの動きが素晴らしかったので、二番煎じで同じような動きのスコアボードアプリを作りました。<br />
+      (<a href="https://hkitago.github.io/bgscoreboardapp/">hkitagoさんのアプリはこちら</a>)
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/bgScoreAppSvg/7segment.html"><img src="/bgScoreAppSvg/icon/7seg/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">
+      &ensp;
+      <a href="/bgScoreAppSvg/rectangle.html"><img src="/bgScoreAppSvg/icon/rect/android-chrome-96x96.png" /></a> &emsp;
+      <a href="/bgScoreAppSvg/dotmatrix.html"><img src="/bgScoreAppSvg/icon/dot/android-chrome-96x96.png" /></a> &emsp;
+      <a href="/bgScoreAppSvg/flipfont.html"><img src="/bgScoreAppSvg/icon/flip/android-chrome-96x96.png" /></a> &emsp;
+      <a href="/bgScoreAppSvg/odometer.html"><img src="/bgScoreAppSvg/icon/odo/android-chrome-96x96.png" /></a> &emsp;
+      <a href="/bgScoreAppSvg/handwrite.html"><img src="/bgScoreAppSvg/icon/hand/android-chrome-96x96.png" /></a>
+     </div>
+     <div class="itemdesc">
+      バックギャモン用のスコアボードアプリ(第二弾)です。<br />
+      スコア数字がぬるっとアニメーションするスコアボードアプリです。(2026/1)<br />
+      アニメーションパターンを６種類に増やしました。(2026/9)
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/GammonAppWithAI/"><img src="/GammonAppWithAI/icon/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/GammonAppWithAI/">バックギャモンアプリ (vs AI)</a></div>
+     <div class="itemdesc">
+      対コンピュータでバックギャモンをタブレット上で遊べるようにしたアプリです。
+        →<a href="/GammonAppWithAI/help.html">トリセツ</a><br />
+      ブラウザ内に思考エンジンを置き、対コンピュータでバックギャモンを遊べるようにしました。(2026/10)<br />
+      コンピュータ側の思考エンジンは、wildbg, gammonNet, gnubg の３つから選べるようになっています。<br />
+      棋譜ダウンロード機能もあります。対戦結果をXGなどの解析ソフトで解析することも可能です。
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/GammonApp/normal/"><img src="/GammonApp/normal/icon/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/GammonApp/normal/">バックギャモンアプリ (Normal Backgammon)</a></div>
+     <div class="itemdesc">
+      バックギャモンをタブレット上で遊べるようにしたアプリです。
+        →<a href="/GammonApp/normal/help.html">トリセツ</a><br />
+      人vs人の対戦機能しかありません。(vsコンピュータ、vs世界中の人、と対戦できるアプリではありません。)<br />
+      クロック機能、棋譜ダウンロード機能を追加しました。(2021/7)<br />
+      下記フェアリーギャモンのコードで書き換えたものに差し替えました。(2022/3)
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/GammonApp/"><img src="/GammonApp/icon/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/GammonApp/">フェアリーギャモン (変則ルールギャモン)</a></div>
+     <div class="itemdesc">
+      バックギャモンのルールに手を加えた、変則的なルールのギャモンをタブレットやPC上で遊べるようにしました。
+      <br /><br />
+      ショートギャモン、ロングギャモンは2020年6月号のJBLニュースに掲載された草場先生の記事に触発されて開発しました。<br />
+      コンピュータプログラムを使えば、正確な5面ダイスや7面ダイスも簡単に作れるので、このような変則的なゲームも作れますね。<br />
+      そこから派生して、マイクロギャモン、ハイパーギャモン、ナックギャモン、双八に展開しています。<br />
+      おさんぽギャモンはハーフギャモンですので、ここの仲間に入れています。
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td></td>
+    <td id="includeGammonApp"></td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/bgPositionEditor/"><img src="/bgPositionEditor/icon/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/bgPositionEditor/">bgPositionEditor</a></div>
+     <div class="itemdesc">
+      バックギャモンのポジションを編集するツールです。ポジション画像とXGID文字列を出力できます。<br />
+      2ボタンあるマウスで操作できるモードと、タップで操作できるモードを切り替えて使うことができます。
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/ChibawanRoulette/"><img src="/ChibawanRoulette/icon/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/ChibawanRoulette/">ちばわんポイントルーレット</a></div>
+     <div class="itemdesc">
+      ちば例会の年間ちばわんポイントのポイント抽選券を抽選するアプリです。<br />
+      非常にニッチなアプリです。使う人は多分世界でひとりだけ(笑)
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/OtokogiGammonSvg/"><img src="/OtokogiGammonSvg/icon/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/OtokogiGammonSvg/">漢気ギャモン</a></div>
+     <div class="itemdesc">
+      ちば例会で創案された漢気ギャモンをアプリにしました。<br />
+      マス数とダイス目を7にした「漢気ギャモン7」、マス数とダイス目が5の「漢気ギャモン5」も遊べるようにしました。(2022/3)<br />
+      １人のプレーヤを出目操作するオプション機能を追加しましたが、面白くなかったので止めました。(2025/11)<br />
+      画面描画をSVGにした「漢気ギャモン」に差し替えました。(2026/9)
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/bgKifuViewerEditor/"><img src="/bgKifuViewerEditor/icon/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/bgKifuViewerEditor/">BG Kifu Viewer Editor</a></div>
+     <div class="itemdesc">
+      下記の3機能を統合したアプリです。以前はそれぞれの機能を持つ別々のアプリとして公開していましたが、一つに統合しました。
+        →<a href="/bgKifuViewerEditor/help.html">トリセツ</a><br />
+      &emsp;・バックギャモン棋譜ファイルからゲーム局面を再生する<br />
+      &emsp;・動画を見ながらバックギャモンの棋譜を入力する<br />
+      &emsp;・kifu.me が出力した棋譜ファイルを編集する
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/PipCountTrainer/"><img src="/PipCountTrainer/icon/android-chrome-96x96.png" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">◆<a href="/PipCountTrainer/">Pip Count Trainer</a></div>
+     <div class="itemdesc">
+      バックギャモンのピップカウントを練習するためのアプリです。<br />
+      ランダムで出力されるポジションのピップカウントを入力し、正しいかどうかを判定してくれます。<br />
+      ピップカウントができない自分のために作りましたが、皆様にも使ってもらえるとうれしいです。
+     </div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <a href="/MyBoardReport/ReportForMyHandmadeBGBoard.pdf"><img src="/MyBoardReport/board-icon-96x72.jpg" /></a>
+    </td>
+    <td>
+     <div class="itemtitle">
+      ◆<a href="/MyBoardReport/ReportForMyHandmadeBGBoard.pdf">自作バックギャモンボードのご紹介</a>
+      &emsp;&emsp;
+      <a href="/MyBoardReport/Appendix1-BoardDesign.pdf">付録1</a>&emsp;
+      <a href="/MyBoardReport/Appendix2-CalcurateCircle.pdf">付録2</a>&emsp;
+      <a href="/MyBoardReport/Appendix3-MyBoardReport-201210.pdf">付録3</a>
+     </div>
+     <div class="itemdesc">
+      趣味でバックギャモンボードも作製しています。<br />
+      作製したボードに込めたコンセプトや思いを少しでも分かっていただきたいと思い、<br />
+      ボード作製時のエピソードなどを記したレポートを、2022/10の王位戦のときにまとめました。<br />
+      そのレポートを当ホームページに再掲いたします。ご笑読いただければ幸いです。
+     </div>
+    </td>
+   </tr>
+  </table>
+  <hr />
 
-<p>参考：<a href="https://color-variations.com/android-siteicon#toc4">【Android】スマホのホーム画面にWebサイトのショートカットアイコンを作る方法</a></p>
+  <h3><a name="app">◆上記のアプリを全画面表示のアプリとして使う方法</a></h3>
+  <p>
+   「ホーム画面に追加」の機能を使うことにより、普通のアプリと同じように全画面表示のアプリとして使うことができます。
+  </p>
 
+  <h4>●Android端末の場合</h4>
+  <ul class="itemnone">
+   <li>(1)Chromeで上記リンク先のアプリを開く</li>
+   <li>(2)設定アイコン(右上の３点のアイコン)をタップ</li>
+   <li>(3)「ホーム画面に追加」をタップ</li>
+   <li>(4)ホーム画面に追加してもよいかどうかの確認画面で「追加」をタップ</li>
+   <li>(5)ホーム画面に追加しましたのメッセージが表示されるので、画面内を確認</li>
+   <li>(6)次回からはこのアイコンをタップすればアプリが開く</li>
+  </ul>
 
-<h4>●Apple端末(iPhone, iPadなど)の場合</h4>
-<ul class="itemnone">
-<li>(1)Safari, Chrome(*1)で上記リンク先のアプリを開く
-<li>(2)送信アイコン(□から↑が突き出ているアイコン)をタップ
-<li>(3)「ホーム画面に追加」をタップ
-<li>(4)「追加」をタップ
-<li>(5)追加されているはずなので、画面内を確認
-<li>(6)次回からはこのアイコンをタップすればアプリが開く
-</ul>
+  <p>
+   参考：<a href="https://color-variations.com/android-siteicon#toc4">
+    【Android】スマホのホーム画面にWebサイトのショートカットアイコンを作る方法</a>
+  </p>
 
-<p>(*1) Apple端末でChromeから「ホーム画面に追加」機能が使えるのは iOS 16.4 以降のバージョンです。</p>
+  <h4>●Apple端末(iPhone, iPadなど)の場合</h4>
+  <ul class="itemnone">
+   <li>(1)Safari, Chrome(*1)で上記リンク先のアプリを開く</li>
+   <li>(2)送信アイコン(□から↑が突き出ているアイコン)をタップ</li>
+   <li>(3)「ホーム画面に追加」をタップ</li>
+   <li>(4)「追加」をタップ</li>
+   <li>(5)追加されているはずなので、画面内を確認</li>
+   <li>(6)次回からはこのアイコンをタップすればアプリが開く</li>
+  </ul>
 
-<p>参考：<a href="https://www.softbank.jp/support/faq/view/12288">［iPhone／iPad］ホーム画面にショートカットアイコンを作成する方法を教えてください</a></p>
+  <p>(*1) Apple端末でChromeから「ホーム画面に追加」機能が使えるのは iOS 16.4 以降のバージョンです。</p>
 
+  <p>
+   参考：<a href="https://www.softbank.jp/support/faq/view/12288">
+    ［iPhone／iPad］ホーム画面にショートカットアイコンを作成する方法を教えてください</a>
+  </p>
 
-<hr>
-<h3><a name="lock">◆画面の自動ロック時間の変更方法</a></h3>
-<p>スマホにはしばらく操作していないときに画面を自動ロック(スリープ)する機能があります。</p>
-<p>クロック使用中(対局中)にこの機能が発動すると困ったことになりますので、対策しておく必要があります。</p>
-<p>下記に画面の自動ロック時間を変更する手順を示します。自動ロック時間は、設定できる最大時間に設定していただくことをお勧めします。</p>
-<p>※スマホのOSバージョンにより、操作方法が異なるかもしれません。その際はインターネット等で調べてください。</p>
+  <hr />
+  <h3><a name="lock">◆画面の自動ロック時間の変更方法</a></h3>
+  <p>スマホにはしばらく操作していないときに画面を自動ロック(スリープ)する機能があります。</p>
+  <p>クロック使用中(対局中)にこの機能が発動すると困ったことになりますので、対策しておく必要があります。</p>
+  <p>
+   下記に画面の自動ロック時間を変更する手順を示します。自動ロック時間は、設定できる最大時間に設定していただくことをお勧めします。
+  </p>
+  <p>※スマホのOSバージョンにより、操作方法が異なるかもしれません。その際はインターネット等で調べてください。</p>
 
-<h4>●Android端末の場合</h4>
-<ul class="itemnone">
-<li>(1)「設定」アプリを選択
-<li>(2)「ディスプレイ」を選択
-<li>(3)「スリープ」を選択
-<li>(4)スリープするまでの時間を選択し、設定完了
-</ul>
+  <h4>●Android端末の場合</h4>
+  <ul class="itemnone">
+   <li>(1)「設定」アプリを選択</li>
+   <li>(2)「ディスプレイ」を選択</li>
+   <li>(3)「スリープ」を選択</li>
+   <li>(4)スリープするまでの時間を選択し、設定完了</li>
+  </ul>
 
-<p>参考：<a href="https://www.ymobile.jp/support/faq/view/23557">［Android 7.0/7.1］画面の自動ロック（スリープ）時間の変更方法を教えてください</a></p>
+  <p>
+   参考：<a href="https://www.ymobile.jp/support/faq/view/23557">
+  ［Android 7.0/7.1］画面の自動ロック（スリープ）時間の変更方法を教えてください</a>
+  </p>
 
-<h4>●Apple端末(iPhone, iPadなど)の場合</h4>
-<ul class="itemnone">
-<li>(1)「設定」アプリを選択
-<li>(2)「画面表示と明るさ」を選択
-<li>(3)「自動ロック」を選択
-<li>(4)設定時間を変更する
-</ul>
-<p>参考：<a href="https://www.teach-me.biz/iphone/auto-lock.html">iPhoneが自動ロックされるまでの時間を変更する</a></p>
-<p>低電力モードに設定されている場合は、自動ロックは30秒に固定されます。低電力モードを解除してから、自動ロックの時間を設定してください。</p>
+  <h4>●Apple端末(iPhone, iPadなど)の場合</h4>
+  <ul class="itemnone">
+   <li>(1)「設定」アプリを選択</li>
+   <li>(2)「画面表示と明るさ」を選択</li>
+   <li>(3)「自動ロック」を選択</li>
+   <li>(4)設定時間を変更する</li>
+  </ul>
+  <p>
+   参考：<a href="https://www.teach-me.biz/iphone/auto-lock.html">iPhoneが自動ロックされるまでの時間を変更する</a>
+  </p>
+  <p>
+   低電力モードに設定されている場合は、自動ロックは30秒に固定されます。
+   低電力モードを解除してから、自動ロックの時間を設定してください。
+  </p>
 
+  <p>
+   ■ご意見・ご要望等ありましたら kawakami あっと js4.so-net.ne.jp にお願いします。
+  </p>
 
-<p>■ご意見・ご要望等ありましたら kawakami あっと js4.so-net.ne.jp にお願いします。</p>
+  <hr />
 
-<hr>
+  <footer class="footer">(C) <span onclick="linkto();">Hina</span>coppy. 2018 -- 2026</footer>
 
-<footer class="footer">(C) <span onclick="linkto();">Hina</span>coppy. 2018 -- 2025</footer>
+  <script>
+   function linkto() {
+    location.href = "/ProblemPager/";
+   }
 
-<script>
-function linkto() { location.href = "/ProblemPager/"; }
-
-//idのところにurlのコンテンツのparamの部分を挿入する。
-function load(id, url, param = "body") {
-  fetch(url)
-    .then(response => response.text())
-    .then(data => {
+   //idのところにurlのコンテンツのparamの部分を挿入する。
+   function load(id, url, param = "body") {
+    fetch(url)
+     .then((response) => response.text())
+     .then((data) => {
       const parser = new DOMParser();
       const html = parser.parseFromString(data, "text/html");
       const elem = html.querySelector(param);
       const insertTo = document.getElementById(id);
       insertTo.appendChild(elem);
-    });
-}
+     });
+   }
 
-//フェアリーギャモンのメニューを挿し込む
-load("includeGammonApp", "/GammonApp/index.html", "table");
-</script>
-</body>
+   //フェアリーギャモンのメニューを挿し込む
+   load("includeGammonApp", "/GammonApp/index.html", "table");
+  </script>
+ </body>
 </html>
