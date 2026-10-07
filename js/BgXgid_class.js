@@ -262,6 +262,56 @@ class Xgid {
     return posary.join("");
   }
 
+  //getMovedPosition()の検証付き版。イリーガルなムーブ(駒がない点から動かす、ブロックされた点へ動かす等)のときは
+  //ポジションを変更せず、理由を返す。 return { position: string, illegal: string|null }
+  //bgKifuViewerEditor の BgKifuParser.nextXgid() から呼ばれるのみ
+  getMovedPositionChecked(pos, move, turn) {
+    const oppo = (-1) * turn;
+    const posary = pos.split("");
+    const myBase = (turn == 1) ? "A" : "a";
+    const opBase = (turn == 1) ? "a" : "A";
+    //指定点にある、指定色(base)の駒数を数えるインライン関数。空点や他色なら0
+    const count = (ch, base) => {
+      if (ch === undefined || ch == "-") { return 0; }
+      const n = ch.charCodeAt(0) - base.charCodeAt(0) + 1;
+      return (n >= 1 && n <= this.ckrnum) ? n : 0;
+    };
+    //失敗理由を返すインライン関数
+    const fail = (mv, reason) => {
+      const illegalreason = mv + ": " + reason;
+      return ({ position: pos, illegal: illegalreason });
+    };
+
+    for (const mv of BgMoveStrUtil.cleanupMoveStr(move, this._xgid)) {
+      const frto = mv.split("/");
+      const fr = parseInt(frto[0]);
+      const to = parseInt(frto[1]);
+      if (isNaN(fr)) { break; }
+      const fpt = (turn == 1) ? fr : this.param1 - fr;
+      const tpt = (turn == 1) ? to : this.param1 - to;
+      const bar = (turn == 1) ? 0 : this.param1;
+      if (fr > to) { //normal move
+        if (count(posary[fpt], myBase) == 0) { //frポイントに自駒がない
+          return fail(mv, "no chequer on the start point");
+        }
+        if (to != 0 && count(posary[tpt], opBase) > 0) { //toポイントがブロックされている
+          return fail(mv, "destination is occupied by opponent");
+        }
+        posary[fpt] = this._incdec(posary[fpt], -1, turn);
+        if (to != 0) {
+          posary[tpt] = this._incdec(posary[tpt], +1, turn);
+        }
+      } else { //hit move (to the bar)
+        if (count(posary[fpt], opBase) == 0) { //toポイントに敵駒がない
+          return fail(mv, "no opponent chequer to hit");
+        }
+        posary[fpt] = this._incdec(posary[fpt], -1, oppo);
+        posary[bar] = this._incdec(posary[bar], +1, oppo);
+      }
+    }
+    return { position: posary.join(""), illegal: null };
+  }
+
   moveChequer2(move) {
     const turn = this.turn;
     const posary = this.position.split("");
@@ -567,7 +617,6 @@ class Xgid {
     const remaindice = [...dicelist]; //sharrow copy
     if (remaindice.length == 0) { return; } //使えるダイスがなければ終了
     const dice = remaindice.shift();
-    if (dice === undefined) { return; }  //動かせるコマがなければ終了
 
     const xgwork1 = new Xgid(xgworkstr, this.gametype);
     for (const fr of xgwork1._getMyChecker()) { //動かせるコマのリスト
@@ -577,9 +626,9 @@ class Xgid {
         const remaindicestr = (remaindice.join("") + "00").substring(0, 2); //使えるダイスでリストを再作成
         xgwork2.dice = remaindicestr; //使ったダイスは次には使えない
         if (xgwork2.isHitted(to)) {
-          xgwork2.moveChequer2(to + "/" + this.param1);
+          xgwork2.moveChequer2(to + "/" + this.param1); //先にヒットされた相手駒をバーへ送り
         }
-        xgwork2.moveChequer2(fr + "/" + to);
+        xgwork2.moveChequer2(fr + "/" + to); //そのうえで自駒を動かす
         this.forcedlist.push([xgwork2.position, remaindice.length, dice]);
         this._makeMovedPosition(xgwork2.xgidstr, remaindice); //再起呼び出しで動かした後のポジションリストを作る
       }
@@ -710,10 +759,12 @@ class Xgid {
     }
 
     //message if syntax error
-    if (syntax_error) {
+    if (syntax_error && !Xgid.suppressAlert) { //棋譜パース中は抑止(BgKifuParserがイリーガルムーブをまとめて通知する)
       alert(alert_message);
     }
     //アラートダイアログを表示するだけで、先に進むことはできる
   }
 
 } //class Xgid
+
+Xgid.suppressAlert = false; //trueの間はXGID構文エラーのalertを出さない
